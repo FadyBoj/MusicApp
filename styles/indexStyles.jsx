@@ -1,7 +1,7 @@
 import {  StyleSheet } from 'react-native';
 const IndexStyles = StyleSheet.create({
     container:{
-        flex:1,
+        flexGrow:1,
         alignItems:'center',
         position:'relative',
         gap:50,

@@ -5,10 +5,13 @@ import { View,
         Animated,
         Image,
         TextInput,
-      ScrollView } from 'react-native'
+        ScrollView,
+        FlatList
+     } from 'react-native'
 
 import React from 'react'
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 //Logo
 import Logo from '../assets/logo'
 
@@ -25,7 +28,9 @@ import {
 //Styles
 import styles from '../styles/indexStyles';
 
-const Home = ({navigation}) => {
+
+const Home = ({}) => {
+  const navigation = useNavigation()
 
   GoogleSignin.configure({
     iosClientId:'66441546360-mf57conc6939aulbovqqlupi6nqrahiv.apps.googleusercontent.com',
@@ -66,8 +71,7 @@ const Home = ({navigation}) => {
 
 
   return (
-    <ScrollView contentContainerStyle={{flex:1}}>
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
 
       <LinearGradient 
       colors={['#434343','#000000']}
@@ -110,16 +114,16 @@ const Home = ({navigation}) => {
       <View style={styles.btns}>
 
         <Animated.View  style={{width:300,height:50,transform:[{scale:animatedScale}]}}>
-          <TouchableHighlight
+          <TouchableOpacity
             activeOpacity={0.6}
             underlayColor="#097d9e"
             onPressIn={()=>{setCreateClicked(true)}}
             onPressOut={()=>{setCreateClicked(false)}} 
-            onPress={()=>{navigation.push('CreateAccount')}}
+            onPress={()=>{navigation.navigate('AccountCreationScreen')}}
             style={styles.createAccountBtn}>
             <Text style={styles.createAccountText}>Sign up free</Text>
 
-          </TouchableHighlight>
+          </TouchableOpacity>
         </Animated.View>
 
         <Animated.View style={{width:300,height:50,transform:[{scale:1}]}}>
@@ -135,7 +139,6 @@ const Home = ({navigation}) => {
       </View>
 
 
-    </View>
     </ScrollView>
   )
 }
