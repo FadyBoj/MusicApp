@@ -2,11 +2,9 @@ import { View, Text,TextInput, StyleSheet, TouchableOpacity } from 'react-native
 import React from 'react'
 //Icons
 import EmailIcon from '../assets/EmailIcon'
-import { useNavigation } from '@react-navigation/native';
 
-const CreateAccount = ({route}) => {
+const CreateAccount = ({route,navigation}) => {
 
-  const navigation = useNavigation()
 
   const handleNext = () =>{
     navigation.navigate('FirstLast');

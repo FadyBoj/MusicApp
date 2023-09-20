@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import react from 'react'
 import { View , Text, TouchableOpacity } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { TransitionPresets } from '@react-navigation/stack';
@@ -9,21 +9,54 @@ import { TransitionPresets } from '@react-navigation/stack';
 import Home from './screens/Home';
 import CreateAccount from './screens/CreateAccount';
 import FirstLast from './screens/FirstLast';
+import EnterPassword from './screens/Password';
 //Icons
 import LeftArrow from './assets/LeftArrow';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
+//custom header 
+import CustomHeader from './components/CustomHeader';
 
-function AccountCreationScreen(){
+
+
+
+
+//Account stack 
+
+
+const CreateAccountStack = () => {
   return (
-    <Tab.Navigator tabBar={()=> null}  screenOptions={{swipeEnabled:false}}  >
-      <Tab.Screen   name="CreateAccount" component={CreateAccount} />
-      <Tab.Screen name="FirstLast" component={FirstLast} />
-    </Tab.Navigator>
+    <Stack.Navigator
+     screenOptions={{
+      headerShown:false,
+      ...TransitionPresets.SlideFromRightIOS,
+      cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS,
+      presentation:'modal',
+        transitionSpec:{
+          open:TransitionSpecs.TransitionIOSSpec,
+          close:TransitionSpecs.BottomSheetSlideInSpec
+        },
+     }}
+    >
+      <Stack.Screen  name="CreateAccount" component={CreateAccount} />
+      
+      <Stack.Screen 
+      name="FirstLast"
+      component={FirstLast}
+      
+       />
+
+      <Stack.Screen name="Password" component={EnterPassword} />
+    </Stack.Navigator>
   );
-}
+};
+
+
+
+
+
 
 
 const App = () =>{
@@ -42,11 +75,15 @@ const App = () =>{
   
 
   return(
-    <NavigationContainer>
+    <NavigationContainer  >
 
       {/* Home Screen */}
 
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerMode:'screen'
+        }}
+      >
         <Stack.Screen 
         name="Home" 
         component={Home}
@@ -59,7 +96,7 @@ const App = () =>{
 
       <Stack.Screen 
       name="AccountCreationScreen" 
-      component={AccountCreationScreen}
+      component={CreateAccountStack}
       options={({ navigation })=>({
         headerTitleAlign:'center',
         headerShadowVisible:false,
@@ -80,15 +117,8 @@ const App = () =>{
 
         ...TransitionPresets.SlideFromRightIOS,
         transitionSpec:{
-          open:config,
-          close:{animation:'spring',config:{
-            stiffness: 100,
-            damping: 1,
-            mass: 1,
-            overshootClamping: true,
-            restDisplacementThreshold: 0.01,
-            restSpeedThreshold: 0.01,
-          }}
+          open:TransitionSpecs.TransitionIOSSpec,
+          close:TransitionSpecs.FadeOutToBottomAndroidSpec
         }
        })}
        
