@@ -3,7 +3,7 @@ import react from 'react'
 import { View , Text, TouchableOpacity } from 'react-native';
 import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { TransitionPresets } from '@react-navigation/stack';
 //screens
 import Home from './screens/Home';
@@ -75,7 +75,7 @@ const App = () =>{
   
 
   return(
-    <NavigationContainer  >
+    <NavigationContainer theme={DarkTheme}  >
 
       {/* Home Screen */}
 

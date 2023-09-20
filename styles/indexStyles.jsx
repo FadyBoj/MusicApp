@@ -28,7 +28,7 @@ const IndexStyles = StyleSheet.create({
         gap:20
     },
     createAccountBtn:{
-        backgroundColor:'#1CB5E0',
+        backgroundColor:'#1590b3',
         padding:10,
         width:'100%',
         height:'100%',

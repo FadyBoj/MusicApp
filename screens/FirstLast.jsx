@@ -32,11 +32,11 @@ const FirstLast = ({navigation}) => {
       <View style={styles.navBtnsContainer}>
 
         <TouchableOpacity onPress={() =>{navigation.goBack()}} style={styles.navBtn}>
-          <Text>Back</Text>
+          <Text style={{color:'#fff'}}>Back</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleNext} style={styles.navBtn}>
-          <Text>Next</Text>
+          <Text style={{color:'#fff'}}>Next</Text>
         </TouchableOpacity>
       </View>
 
