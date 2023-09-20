@@ -1,13 +1,13 @@
 import { View, Text,TextInput, StyleSheet, TouchableOpacity,
    ActivityIndicator,
-    Modal,
-    TouchableWithoutFeedback
+   ScrollView,
+   TouchableWithoutFeedback
    } from 'react-native';
 import React from 'react';
 import axios from 'axios';
 //Icons
 import EmailIcon from '../assets/EmailIcon'
-
+import Modal from 'react-native-modal';
 //Material
 
 
@@ -18,63 +18,73 @@ const CreateAccount = ({route,navigation}) => {
   const [modalVisible,setModalVisible] = React.useState(false);
 
 
-  const showModal = () => setModalVisible(true);
-  const hideModal = () => setModalVisible(false);
+  const handleClickOutSide = ()=>{
+    setModalVisible(false)
+  }
 
 
   const handleNext = async() =>{
-    try {
-      setIsLoading(true)
-      const { data } = await axios.post('http://localhost:8000/users/add-user',{email:emailText})
-      setIsLoading(false)
+      try {
+        setIsLoading(true)
+        const { data } = await axios.post('http://localhost:8000/users/add-user',{email:emailText})
+        setIsLoading(false)
 
-    } catch (err) {
-      setIsLoading(false)
-      setModalVisible(true)
+      } catch (err) {
+        setIsLoading(false)
+        setModalVisible(true)
 
-      
-    }
+        
+      }
 
   }
 
 
   return (
-    <View style={[styles.container,{}]}>
-      
-      <Modal
-      animationType='fade'
-      transparent={true}
-      visible={modalVisible}
-      hardwareAccelerated={true}
-      >
-        <TouchableOpacity  activeOpacity={1} style={styles.modalBrightness}>
-          <TouchableOpacity onPress={() =>{setModalVisible(false)}} 
-          style={{position:'absolute',width:'100%',height:'100%',}}>
+    <ScrollView contentContainerStyle={styles.container}>
+        
+        <Modal 
+        coverScreen={true}
+        style={styles.modalBrightness}
+        isVisible={modalVisible} 
+        animationIn='pulse'
+        animationOut='fadeOut'
+        >
+          <TouchableOpacity onPress={handleClickOutSide} 
+          style={{width:'100%',height:'100%',flex:1}}
+          activeOpacity={1}
+
+          >
 
           </TouchableOpacity>
           <View style={styles.modal}>
+            
+            <View style={styles.modalTexts}>
+              <Text style={styles.modalMainText}>This email is already connected to an account</Text>
+              <Text style={styles.modalSecondText}>Do you wannas Log in instead ? </Text>
+              
+            </View>
 
-            <Text style={styles.modalMainText}>This email is already registered</Text>
-            <Text style={styles.modalSecondText}>Do you wanna login instead ?</Text>
+            <View style={{alignItems:'center',gap:10}}>
 
             <TouchableOpacity style={styles.loginBtn}>
-              <Text style={styles.btnText}>Go to login</Text>
+                <Text style={styles.btnText}>GO TO LOGIN</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=>{setModalVisible(false)}} style={styles.modalClose}>
-              <Text style={styles.modalCloseText}>Close</Text>
+            <TouchableOpacity onPress={() => {setModalVisible(false)}} style={styles.modalClose}>
+                <Text style={styles.btnText}>Close</Text>
             </TouchableOpacity>
+
+            </View>
 
           </View>
-        </TouchableOpacity>
-
       </Modal>
+        
 
       <Text style={styles.mainText}>Enter your Email address.</Text>
 
       <View style={styles.emailContainer}>
         <View style={styles.emailIconContainer}><EmailIcon width={30} height={30} /></View>
-        <TextInput onChangeText={(text)=>{setEmailText(text)}} placeholder='Email address' style={styles.emailInput}/>
+        <TextInput onSubmitEditing={handleNext} onChangeText={(text)=>{setEmailText(text)}} placeholder='Email address' style={styles.emailInput}/>
        
       </View>
 
@@ -94,7 +104,7 @@ const CreateAccount = ({route,navigation}) => {
         } 
       </View>
 
-    </View>
+    </ScrollView>
   )
 }
 
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
   container:{
     alignItems:'center',
     paddingTop:50,
-    flex:1,
+    flexGrow:1,
     backgroundColor:'#000',
     width:"100%",
     gap:20
@@ -159,7 +169,6 @@ const styles = StyleSheet.create({
   },
   modalBrightness:{
     flex:1,
-    backgroundColor:'rgba(0, 0, 0, 0.452)',
     justifyContent:'center',
     alignItems:'center',
 
@@ -167,17 +176,18 @@ const styles = StyleSheet.create({
     zIndex:10
   },
   modal:{
-    width:'90%',
+    width:'99%',
     height:300,
     backgroundColor:'#1c1c1c',
     alignItems:'center',
     borderRadius:12,
     paddingTop:40,
     zIndex:20,
-    gap:30
+    gap:50,
+    position:'absolute'
   },
   modalMainText:{
-    color:'#fff',
+    color:'#e3e3e3',
     fontFamily:'ProductSans-Medium',
     fontSize:18,
     width:'70%',
@@ -185,11 +195,12 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   },
   modalSecondText:{
-    color:'#fff',
+    color:'#e3e3e3',
     fontFamily:'ProductSans-Medium',
+    fontSize:14
   },
   loginBtn:{
-    backgroundColor:'#4ea52f',
+    backgroundColor:'#07571c',
     width:170,
     height:50,
     borderRadius:19,
@@ -197,16 +208,24 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   btnText:{
-    color:'#fff',
+    color:'#e3e3e3',
     fontFamily:'ProductSans-Medium',
-    fontSize:19
+    fontSize:17,
+    fontWeight:'bold'
   },
   modalClose:{
-    padding:20
+    padding:10,
   },
   modalCloseText:{
     color:'#fff',
     fontFamily:'ProductSans-Medium',
+    fontSize:20
+
+  },
+  modalTexts:{
+    alignItems:'center',
+    width:'100%',
+    gap:20
   }
 
 
