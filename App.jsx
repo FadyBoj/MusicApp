@@ -20,11 +20,7 @@ const Tab = createMaterialTopTabNavigator();
 import CustomHeader from './components/CustomHeader';
 
 
-
-
-
 //Account stack 
-
 
 const CreateAccountStack = () => {
   return (
@@ -54,24 +50,9 @@ const CreateAccountStack = () => {
 };
 
 
-
-
-
-
-
 const App = () =>{
 
-  const config = {
-    animation: 'spring',
-    config: {
-      stiffness: 1000,
-      damping: 500,
-      mass: 3,
-      overshootClamping: true,
-      restDisplacementThreshold: 0.01,
-      restSpeedThreshold: 0.01,
-    },
-  };
+  
   
 
   return(

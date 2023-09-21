@@ -5,10 +5,12 @@ const IndexStyles = StyleSheet.create({
         alignItems:'center',
         position:'relative',
         gap:50,
+        justifyContent:'space-between',
+        paddingBottom:40
       
     },
     logo:{
-        marginTop:20
+        marginTop:180
     },
     linear:{
         position:'absolute',

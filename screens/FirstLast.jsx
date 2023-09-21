@@ -1,12 +1,37 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 
-const FirstLast = ({navigation}) => {
+const FirstLast = ({navigation,route}) => {
 
+  const lastInfo = route.params.userInfo
+
+  const [firstnameText,setFirstnameText] = React.useState('');
+  const [lastnameText,setLastnameText] = React.useState('')
+
+  console.log(firstnameText,lastnameText)
 
   const handleNext = () =>{
-    navigation.navigate('Password');
+
+    let approved = true;
+
+    if(firstnameText.length < 4)
+    {
+      return approved = false
+    }
+
+    if(lastnameText.length < 4)
+    {
+      return approved = false
+    }
+
+
+    navigation.navigate('Password',{userInfo:{
+      ...lastInfo,
+      firstname:firstnameText,
+      lastname:lastnameText
+    }});
   }
+
 
 
 
@@ -16,7 +41,7 @@ const FirstLast = ({navigation}) => {
       <View style={styles.inputContainer}> 
 
         <Text style={styles.inputText}>First name</Text>
-        <TextInput style={styles.input} />
+        <TextInput onChangeText={(text) =>{setFirstnameText(text)}} style={styles.input} />
         <Text>Use at least 4 characters</Text>
 
       </View>
@@ -24,7 +49,7 @@ const FirstLast = ({navigation}) => {
       <View style={styles.inputContainer}> 
 
         <Text style={styles.inputText}>Last name</Text>
-        <TextInput  style={styles.input} />
+        <TextInput onChangeText={(text) =>{setLastnameText(text)}}  style={styles.input} />
         <Text>Use at least 4 characters</Text>
         
       </View>

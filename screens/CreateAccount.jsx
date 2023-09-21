@@ -1,14 +1,18 @@
 import { View, Text,TextInput, StyleSheet, TouchableOpacity,
    ActivityIndicator,
    ScrollView,
-   TouchableWithoutFeedback
+   KeyboardAvoidingView,
+   Keyboard
    } from 'react-native';
 import React from 'react';
 import axios from 'axios';
 //Icons
 import EmailIcon from '../assets/EmailIcon'
+import ErrorIcon from '../assets/Error';
+
+//Materials
 import Modal from 'react-native-modal';
-//Material
+
 
 
 const CreateAccount = ({route,navigation}) => {
@@ -16,7 +20,7 @@ const CreateAccount = ({route,navigation}) => {
   const [emailText,setEmailText] = React.useState('');
   const [isLoading,setIsLoading] = React.useState(false);
   const [modalVisible,setModalVisible] = React.useState(false);
-
+  const [errorMsg,setErrorMsg] = React.useState('');
 
   const handleClickOutSide = ()=>{
     setModalVisible(false)
@@ -24,30 +28,50 @@ const CreateAccount = ({route,navigation}) => {
 
 
   const handleNext = async() =>{
+
+    let approved = true;
+
+    if(emailText.length === 0)
+    {
+      setErrorMsg('Email is required');
+      return approved = false;
+    }
+    if(emailText.length < 5 || !emailText.includes('@') || !emailText.endsWith('.com'))
+    {
+      return setErrorMsg('Please enter a valid email address');
+      
+    }
+   
+    
+      if(approved)
+      {
+      setErrorMsg('')
       try {
+        Keyboard.dismiss()
         setIsLoading(true)
-        const { data } = await axios.post('http://localhost:8000/users/add-user',{email:emailText})
+        const { data } = await axios.post('http://localhost:8000/users/check-user',{email:emailText})
         setIsLoading(false)
+        navigation.navigate('FirstLast',{userInfo:{email:emailText}})
 
       } catch (err) {
         setIsLoading(false)
         setModalVisible(true)
-
-        
+        console.log(err.response.data.msg)        
       }
+    }
 
   }
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-        
+    <View style={styles.container}>
         <Modal 
         coverScreen={true}
         style={styles.modalBrightness}
         isVisible={modalVisible} 
         animationIn='pulse'
         animationOut='fadeOut'
+        animationOutTiming={100}
         >
           <TouchableOpacity onPress={handleClickOutSide} 
           style={{width:'100%',height:'100%',flex:1}}
@@ -83,10 +107,21 @@ const CreateAccount = ({route,navigation}) => {
       <Text style={styles.mainText}>Enter your Email address.</Text>
 
       <View style={styles.emailContainer}>
-        <View style={styles.emailIconContainer}><EmailIcon width={30} height={30} /></View>
-        <TextInput onSubmitEditing={handleNext} onChangeText={(text)=>{setEmailText(text)}} placeholder='Email address' style={styles.emailInput}/>
-       
+        <View style={{width:"100%",position:'relative',justifyContent:'center'}}>
+          <View style={styles.emailIconContainer}><EmailIcon width={30} height={30} /></View>
+          <TextInput onSubmitEditing={handleNext} onChangeText={(text)=>{setEmailText(text)}} placeholder='Email address' style={styles.emailInput}/>
       </View>
+
+        { errorMsg.length > 0 &&
+        <View style={styles.errorContainer}>
+          <View><ErrorIcon width={20} height={20} /></View>
+          <Text style={styles.errorMsg}>{errorMsg}</Text>
+        </View>
+        }
+
+      </View>
+      
+      
 
       <View style={styles.nextBtnContainer}> 
 
@@ -104,7 +139,9 @@ const CreateAccount = ({route,navigation}) => {
         } 
       </View>
 
-    </ScrollView>
+     
+
+    </View>
   )
 }
 
@@ -133,12 +170,12 @@ const styles = StyleSheet.create({
     borderWidth:2,
     width:'100%',
     backgroundColor:'#141414',
-    paddingLeft:60,
+    paddingLeft:50,
     color:"#fff"
   },
   emailIconContainer:{
     position:'absolute',
-    left:20,
+    left:8,
     zIndex:10
   },
   nextBtnContainer:{
@@ -226,6 +263,16 @@ const styles = StyleSheet.create({
     alignItems:'center',
     width:'100%',
     gap:20
+  },
+  errorContainer:{
+    flexDirection:'row',
+    gap:10,
+    paddingLeft:6,
+    position:'absolute',
+    top:60
+  },
+  errorMsg:{
+    color:"#cc3300"
   }
 
 

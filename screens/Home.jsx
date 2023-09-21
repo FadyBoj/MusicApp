@@ -53,6 +53,7 @@ const Home = ({}) => {
   }
 
 
+
   //Handle button animation
   const [createClicked,setCreateClicked] = React.useState(false);
   const [animatedScale,setAnimatedScale] = React.useState(new Animated.Value(300))
@@ -83,59 +84,49 @@ const Home = ({}) => {
       <View style={styles.logo}> 
         <Logo width={230} height={100} /> 
         </View>
-      <View style={styles.mainTitleCont}>
-        <Text style={styles.mainTitle}>Millions of songs.</Text>
-        <Text style={styles.mainTitle}><Text style={{color:'#1CB5E0'}}>Free</Text> forever.</Text>
-      </View>
+     
 
-      <View style={styles.emailLoginContainer}>
+    
 
-        <Text style={styles.emailLoginText}>Log in to Megnwene</Text>
-        
-        <View style={{position:'relative',justifyContent:'center',width:'100%',alignItems:'center'}}>
-          <TextInput placeholder='Enter your Email address' style={styles.emailLoginInput} />
-          <UserIcon style={styles.userIcon} width={20} height={20} />
+      <View style={{gap:40,alignItems:'center'}}>
+
+        <View style={styles.mainTitleCont}>
+          <Text style={styles.mainTitle}>Millions of songs.</Text>
+          <Text style={styles.mainTitle}><Text style={{color:'#1CB5E0'}}>Free</Text> forever.</Text>
         </View>
 
-        <Animated.View>
-          <TouchableHighlight style={styles.emailContinue}>
-            <Text style={styles.emailContinueText}>Continue With Email</Text>
-          </TouchableHighlight>
-        </Animated.View>
-    
-      </View>
+        <View style={styles.btns}>
 
-      <View style={styles.space}>
-          <View style={styles.firstSpace}></View>
-          <View style={styles.or}><Text>or</Text></View>
-          <View style={styles.secondSpace}></View>
-      </View>
+          <Animated.View>
+              <TouchableHighlight style={styles.emailContinue}>
+                <Text style={styles.emailContinueText}>Continue With Email</Text>
+              </TouchableHighlight>
+            </Animated.View>
 
-      <View style={styles.btns}>
+            <Animated.View  style={{width:300,height:50,transform:[{scale:animatedScale}]}}>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                underlayColor="#097d9e"
+                onPressIn={()=>{setCreateClicked(true)}}
+                onPressOut={()=>{setCreateClicked(false)}} 
+                onPress={()=>{navigation.navigate('AccountCreationScreen')}}
+                style={styles.createAccountBtn}>
+                <Text style={styles.createAccountText}>Sign up free</Text>
 
-        <Animated.View  style={{width:300,height:50,transform:[{scale:animatedScale}]}}>
-          <TouchableOpacity
-            activeOpacity={0.6}
-            underlayColor="#097d9e"
-            onPressIn={()=>{setCreateClicked(true)}}
-            onPressOut={()=>{setCreateClicked(false)}} 
-            onPress={()=>{navigation.navigate('AccountCreationScreen')}}
-            style={styles.createAccountBtn}>
-            <Text style={styles.createAccountText}>Sign up free</Text>
+              </TouchableOpacity>
+            </Animated.View>
 
-          </TouchableOpacity>
-        </Animated.View>
+            <Animated.View style={{width:300,height:50,transform:[{scale:1}]}}>
+              <TouchableHighlight onPress={handleGoogleSignIn} style={styles.googleBtn}>
 
-        <Animated.View style={{width:300,height:50,transform:[{scale:1}]}}>
-          <TouchableHighlight onPress={handleGoogleSignIn} style={styles.googleBtn}>
+                <View style={styles.googleBtnContent}>
+                <Image style={styles.googleIcon} source={require('../assets/google.png')}/>
+                <Text style={styles.googleBtnText}>Continue With Google</Text>
+                </View>
+              </TouchableHighlight>
+              </Animated.View>
 
-            <View style={styles.googleBtnContent}>
-            <Image style={styles.googleIcon} source={require('../assets/google.png')}/>
-            <Text style={styles.googleBtnText}>Continue With Google</Text>
-            </View>
-          </TouchableHighlight>
-          </Animated.View>
-
+        </View>
       </View>
 
 
