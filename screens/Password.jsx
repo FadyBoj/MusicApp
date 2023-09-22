@@ -94,7 +94,6 @@ const Password = ({navigation, route}) => {
         <View style={styles.modal}>
           <View style={styles.modalTexts}>
             <Text style={styles.modalMainText}>{modalText}</Text>
-            <Text style={styles.modalSecondText}>Please try again</Text>
           </View>
 
           <TouchableOpacity

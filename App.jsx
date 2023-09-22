@@ -2,7 +2,8 @@ import 'react-native-gesture-handler';
 import react from 'react'
 import { View , Text, TouchableOpacity } from 'react-native';
 import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { TransitionPresets } from '@react-navigation/stack';
 //screens
@@ -10,14 +11,20 @@ import Home from './screens/Home';
 import CreateAccount from './screens/CreateAccount';
 import FirstLast from './screens/FirstLast';
 import EnterPassword from './screens/Password';
+import MainPage from './screens/MainPage';
+import Search from './screens/Search'
+import Library from './screens/Library';
 //Icons
 import LeftArrow from './assets/LeftArrow';
 
-const Stack = createStackNavigator();
-const Tab = createMaterialTopTabNavigator();
+//components
+import TabBar from './components/TabBar';
 
-//custom header 
-import CustomHeader from './components/CustomHeader';
+
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+
 
 
 //Account stack 
@@ -49,12 +56,28 @@ const CreateAccountStack = () => {
   );
 };
 
+//Actual app tabs
+
+const AppTabs = ()=>{
+  return(
+  <Tab.Navigator
+  backBehavior='history'
+  detachInactiveScreens={true}
+  tabBar={()=> <TabBar />}
+ 
+  >
+
+    <Tab.Screen options={{tabBarLabel:"sa"}} name='mainPage' component={MainPage} />
+    <Tab.Screen name='Search' component={Search} />
+    <Tab.Screen name='Library' component={Library} />
+
+  </Tab.Navigator>
+  )
+}
+
 
 const App = () =>{
-
   
-  
-
   return(
     <NavigationContainer theme={DarkTheme}  >
 
@@ -67,7 +90,7 @@ const App = () =>{
       >
         <Stack.Screen 
         name="Home" 
-        component={Home}
+        component={AppTabs}
         options={{
           headerShown:false
         }}
