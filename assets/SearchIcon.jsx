@@ -29,7 +29,7 @@ const SearchIcon = (props) => (
         cy={11}
         r={8}
         style={{
-          fill: props.active ? "#fff" : "#000",
+          fill: props.active ? "#fff" : "rgba(0, 0, 0, 0)",
           strokeWidth: 0.744,
         }}
       />
@@ -41,7 +41,7 @@ const SearchIcon = (props) => (
           stroke: props.active ? "#fff" : "#919191",
           strokeLinecap: "round",
           strokeLinejoin: "round",
-          strokeWidth: 0.744,
+          strokeWidth: 1.744,
         }}
       />
     </G>

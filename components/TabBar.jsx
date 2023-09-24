@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 //Styles
@@ -8,36 +8,52 @@ import styles  from '../styles/tabBarStyles';
 import HomeIcon from '../assets/Home';
 import SearchIcon from '../assets/SearchIcon';
 import LibraryIcon from '../assets/LibraryIcon';
-const TabBar = ({navigation}) => {
+const TabBar = ({state, descriptors, navigation}) => {
 
-    const [activeTab,setActiveTab] = React.useState(2);
+
+
 
 
   return (
     <View style={styles.container}>
 
-        <View style={styles.tabItem}>
-            <HomeIcon active={activeTab === 0 ? true : false} width={30} height={30} />
-            <Text 
-            style={[styles.tabText,activeTab === 0 ? {} : styles.inActiveText]}
-            >Home</Text>
-        </View>
+      {
+        state.routes.map((route,index) =>{
+            const { options } = descriptors[route.key];
+            const label = route.name;
+            const isActive = state.index === index ;
 
-        <View style={styles.tabItem}> 
-            <SearchIcon active={activeTab === 1 ? true : false} width={30} height={30} />
-            <Text
-            style={[styles.tabText,activeTab === 1 ? {} : styles.inActiveText]}
-            >
-                Search</Text>
-        </View>
+            const tabIcons = [
+                <HomeIcon active={isActive ? true : false} width={30} height={30} />,
+                <SearchIcon active={isActive ? true : false} width={30} height={30}/>,
+                <LibraryIcon active={isActive ? true : false}  width={30} height={30} />
+            ]
 
-        <View style={styles.tabItem}>
-            <LibraryIcon active={activeTab === 2 ? true : false} width={30} height={30} />
-            <Text 
-            style={[styles.tabText,activeTab === 2 ? {} : styles.inActiveText]}
-            >
-                Library</Text>
-        </View>
+
+            const handlePress = () => {
+                const event = navigation.emit({
+                  type: 'tabPress',
+                  target: route.key,
+                  canPreventDefault: true,
+                });
+
+      
+                if (!isActive && !event.defaultPrevented) {
+                  // The `merge: true` option makes sure that the params inside the tab screen are preserved
+                  navigation.navigate({ name: route.name, merge: true });
+                }
+              };
+
+            return (
+                <TouchableOpacity key={index} onPress={handlePress} style={styles.tabItem}>
+                    {tabIcons[index]}
+                    <Text style={[styles.tabText,!isActive ? styles.inActiveText : {}]}>
+                        {label}
+                    </Text>
+                </TouchableOpacity>
+            )
+        })
+      }
 
         
     </View>

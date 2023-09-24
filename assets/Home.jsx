@@ -24,8 +24,8 @@ const HomeIcon = (props) => (
         id="secondary"
         points="19 11 19 21 14 21 14 14 10 14 10 21 5 21 5 11 3 11 12 2 21 11 19 11"
         style={{
-          fill: "#6c7ae6",
-          strokeWidth: 1.744,
+          fill: "rgba(0, 0, 0, 0)",
+          strokeWidth:1.2,
         }}
       />
       <Polygon
@@ -33,7 +33,7 @@ const HomeIcon = (props) => (
         points="19 11 19 21 14 21 14 14 10 14 10 21 5 21 5 11 3 11 12 2 21 11 19 11"
         style={{
           fill: "none",
-          stroke: props.active ? "#fff" : "#3d3d3d",
+          stroke: props.active ? "#fff" : "rgba(0, 0, 0, 0)",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: 0.4800000000000001,
@@ -45,7 +45,7 @@ const HomeIcon = (props) => (
         id="secondary"
         points="19 11 19 21 14 21 14 14 10 14 10 21 5 21 5 11 3 11 12 2 21 11 19 11"
         style={{
-          fill: props.active ? "#fff" : "#000",
+          fill: props.active ? "#fff" : "rgba(0, 0, 0, 0)",
           strokeWidth: 0.648,
         }}
       />
@@ -54,7 +54,6 @@ const HomeIcon = (props) => (
         points="19 11 19 21 14 21 14 14 10 14 10 21 5 21 5 11 3 11 12 2 21 11 19 11"
         style={{
           fill: "none",
-          stroke: props.active ? "#fff" : "#3d3d3d",
           strokeLinecap: "round",
           strokeLinejoin: "round",
           strokeWidth: 0.648,

@@ -3,8 +3,8 @@ import react from 'react'
 import { View , Text, TouchableOpacity } from 'react-native';
 import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import { NavigationContainer, DarkTheme } from '@react-navigation/native';
+ 
+import { NavigationContainer, DarkTheme,useNavigation } from '@react-navigation/native';
 import { TransitionPresets } from '@react-navigation/stack';
 //screens
 import Home from './screens/Home';
@@ -18,12 +18,11 @@ import Library from './screens/Library';
 import LeftArrow from './assets/LeftArrow';
 
 //components
-import TabBar from './components/TabBar';
+import MyTabBar from './components/TabBar';
 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
 
 
 
@@ -60,18 +59,17 @@ const CreateAccountStack = () => {
 
 const AppTabs = ()=>{
   return(
-  <Tab.Navigator
-  backBehavior='history'
-  detachInactiveScreens={true}
-  tabBar={()=> <TabBar />}
- 
-  >
+    <Tab.Navigator
+    backBehavior='history'
+    tabBar={props => <MyTabBar {...props} />}
+  
+    >
 
-    <Tab.Screen options={{tabBarLabel:"sa"}} name='mainPage' component={MainPage} />
-    <Tab.Screen name='Search' component={Search} />
-    <Tab.Screen name='Library' component={Library} />
+      <Tab.Screen options={{headerShown:false}} name='Home' component={MainPage} />
+      <Tab.Screen name='Search' component={Search} />
+      <Tab.Screen name='Library' component={Library} />
 
-  </Tab.Navigator>
+    </Tab.Navigator>
   )
 }
 
@@ -89,7 +87,7 @@ const App = () =>{
         }}
       >
         <Stack.Screen 
-        name="Home" 
+        name="index" 
         component={AppTabs}
         options={{
           headerShown:false
