@@ -6,25 +6,15 @@ import styles from '../styles/homeStyles'
 
 const TopSong = ({ song }) => {
 
-    const [imageUrl,setImageUrl] = React.useState('');
     
-    const getSongData = async() =>{
-        const { data } = await axios.get(`http://localhost:8000/spotify-api/get-song?id=${song.id}`)
-
-        setImageUrl(data.album.images[0].url)
-    }
-
-    React.useEffect(() =>{
-        getSongData();
-    },[0])
 
   return (
     <View style={styles.topSong}>
-        { imageUrl &&
+        
      <Image style={styles.topSongImage}
-     source={{uri:imageUrl}}
+     source={{uri:song.image}}
      />
-        }
+        <View><Text style={styles.songNameText}>{song.name}</Text></View>
     </View>
   )
 }

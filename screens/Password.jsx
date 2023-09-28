@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Modal from 'react-native-modal';
 import React from 'react';
 import axios from 'axios';
@@ -58,6 +60,10 @@ const Password = ({navigation, route}) => {
         password: passwordText,
       });
       setIsLoading(false);
+
+      await AsyncStorage.setItem('user',JSON.stringify(lastInfo));
+      navigation.navigate('App')
+
       console.log(data.msg);
     } catch (error) {
       setIsLoading(false);

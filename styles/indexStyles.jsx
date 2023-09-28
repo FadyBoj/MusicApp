@@ -9,6 +9,13 @@ const IndexStyles = StyleSheet.create({
         paddingBottom:40
       
     },
+    checkSigned:{
+        position:'absolute',
+        width:'100%',
+        height:'200%',
+        zIndex:100,
+        backgroundColor:'#000',
+    },
     logo:{
         marginTop:180
     },

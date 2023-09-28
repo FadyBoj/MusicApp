@@ -3,10 +3,11 @@ import react from 'react'
 import { View , Text, TouchableOpacity } from 'react-native';
 import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
- 
+
 import { NavigationContainer, DarkTheme,useNavigation } from '@react-navigation/native';
 import { TransitionPresets } from '@react-navigation/stack';
 //screens
+import CheckSigned from './screens/CheckSigned';
 import Home from './screens/Home';
 import CreateAccount from './screens/CreateAccount';
 import FirstLast from './screens/FirstLast';
@@ -73,6 +74,8 @@ const AppTabs = ()=>{
   )
 }
 
+  
+
 
 const App = () =>{
   
@@ -86,15 +89,32 @@ const App = () =>{
           headerMode:'screen'
         }}
       >
+     
+
         <Stack.Screen 
-        name="index" 
-        component={AppTabs}
+        name="checkSigned" 
+        component={CheckSigned}
         options={{
           headerShown:false
         }}
          />
 
-        {/* Create Account Screen */}
+      <Stack.Screen 
+        name="index" 
+        component={Home}
+        options={{
+          headerShown:false
+        }}
+         />
+
+        <Stack.Screen 
+        name="App" 
+        component={AppTabs}
+        options={{
+        headerShown:false
+        }}
+         />
+
 
       <Stack.Screen 
       name="AccountCreationScreen" 

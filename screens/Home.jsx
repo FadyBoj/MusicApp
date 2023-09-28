@@ -4,10 +4,10 @@ import { View,
         TouchableHighlight,
         Animated,
         Image,
-        TextInput,
         ScrollView,
-        FlatList,Key
+         
      } from 'react-native'
+
 
 import React from 'react'
 import LinearGradient from 'react-native-linear-gradient';
@@ -69,11 +69,13 @@ const Home = ({}) => {
       ).start();
     },[createClicked])
 
+    
+
 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-
+      
       <LinearGradient 
       colors={['#434343','#000000']}
       style={styles.linear}

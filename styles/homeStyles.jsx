@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     welcomeText:{
         fontFamily:'ProductSans-Medium',
         color:'#fff',
-        fontSize:40
+        fontSize:34
 
     },
     settingContainer:{
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
     topSongs:{
         width:'100%',
-        marginTop:80
+        marginTop:60
 
     },
     topText:{
@@ -62,22 +62,58 @@ const styles = StyleSheet.create({
 
     },
     topSongsList:{
-        marginTop:30,
+        marginTop:14,
         paddingLeft:20,
         paddingRight:20,
     },
     topSong:{
-        width:155,
-        height:150,
+        
         borderRadius:17,
-        position:'relative',
+        gap:15,
+        flex:1
     },
     topSongImage:{
-        width:'100%',
-        height:'100%',
+        width:180,
+        height:180,
         resizeMode:'contain',
+        borderRadius:4
+    },
+    songNameText:{
+        color:'#969595',
+        width:155,
+        paddingLeft:10,
+        fontFamily:'ProductSans-Medium',
+
+    },
+    topArtistContainer:{
+        width:'100%',
+        alignItems:'center',
+        marginTop:20
+    },
+    topArtistImage:{
+        width:'90%',
+        height:400,
+        resizeMode:'contain',
+        marginTop:27,
+        borderRadius:20,
+        position:'relative',
+        zIndex:10
+    },
+    topArtistText:{
+        fontFamily:'ProductSans-Medium',
+        color:'#fff',
+        fontSize:25,
+        width:'100%',
+        paddingLeft:20,
+        textAlign:'center'
+    },
+    topArtistBrightness:{
         position:'absolute',
-        borderRadius:10
+        width:'90',
+        height:400,
+        backgroundColor:'red',
+        zIndex:40,
+        top:0,
     }
 })
 
