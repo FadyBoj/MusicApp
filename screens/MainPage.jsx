@@ -14,7 +14,7 @@ import SettingsIcon from '../assets/SettingsIcon';
 //Componenets
 import TopSong from '../components/TopSong';
 import LoadingSong from '../components/LoadingSong';
-
+import TopArtist from '../components/TopArtist';
 const MainPage = () => {
 
   //States
@@ -34,7 +34,7 @@ const MainPage = () => {
         name:song.track.name,
         artistName:song.track.album.artists[0].name,
         artistId:song.track.album.artists[0].id,
-        image:song.track.album.images[1].url
+        image:song.track.album.images[0].url
       }
 
       songsInfo.push(newSong)
@@ -66,12 +66,14 @@ const MainPage = () => {
     getTopArtist();
    },[0])
 
+
+
   
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <LinearGradient 
-      colors={['#23377c','#000000']}
+      colors={['#023166','#000000']}
       style={styles.linear}
       locations={[0,0.6]}
       >
@@ -80,7 +82,8 @@ const MainPage = () => {
       <View style={styles.header}>
 
         <View style={styles.welcome}>
-          <Text style={styles.welcomeText}>Hey {name}</Text>
+          <Text style={styles.welcomeText}>Hey {name} ,</Text>
+          <Text style={styles.timeWelcome}>Good evening</Text>
         </View>
 
         <View style={styles.settingContainer}>
@@ -103,10 +106,11 @@ const MainPage = () => {
             renderItem={({ item }) => (
               <TopSong song={item} />
             )}
-            ItemSeparatorComponent={()=> <View style={{width:20}}></View>}
+            ItemSeparatorComponent={()=> <View style={{width:13}}></View>}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingRight: 40 }}
+            contentContainerStyle={{ paddingRight: 30,paddingLeft:5 }}
             />:
+
 
             <FlatList
             style={styles.topSongsList}
@@ -127,21 +131,22 @@ const MainPage = () => {
 
 
       <View style={styles.topArtistContainer}>
-      
-        <Text style={styles.topArtistText}>Artist of the week</Text>
-          { topArtist.image &&
-          <View style={{width:'100%',alignItems:'center',position:'relative',justifyContent:'center',height:400}}>
-            <View style={styles.topArtistBrightness}></View>
-            <View style={{width:'100%',alignItems:'center',position:'relative',justifyContent:'center',height:400}}>
-              <Image 
-              style={styles.topArtistImage}
-              source={{
-                uri:topArtist.image
-              }}
-              />
-            </View>
-          </View>
-          }
+
+          
+          <Text style={styles.topArtistText}>Most listened to artists</Text>
+
+          <FlatList
+          style={styles.topSongsList}
+          horizontal={true}
+          data={topArtist}
+          renderItem={({ item }) =>(
+            <TopArtist artist={item} />
+          )}
+          ItemSeparatorComponent={()=> <View style={{width:30}}></View>}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingRight: 40,paddingLeft:10 }}
+          />
+
       </View>
 
     </ScrollView>

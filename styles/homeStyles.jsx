@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
     container:{
         flexGrow:1,
         alignItems:'center',
+        paddingBottom:30
   
     },
     linear:{
@@ -50,71 +51,96 @@ const styles = StyleSheet.create({
     },
     topSongs:{
         width:'100%',
-        marginTop:60
+        marginTop:40
 
     },
     topText:{
         color:'#fff',
         fontSize:25,
         fontFamily:'ProductSans-Medium',
-        paddingLeft:20,
+        paddingLeft:15,
         fontWeight:'bold'
 
     },
     topSongsList:{
         marginTop:14,
-        paddingLeft:20,
+        paddingLeft:10,
         paddingRight:20,
     },
     topSong:{
+        gap:15
         
-        borderRadius:17,
-        gap:15,
-        flex:1
     },
     topSongImage:{
-        width:180,
-        height:180,
+        width:150,
+        height:150,
         resizeMode:'contain',
-        borderRadius:4
     },
     songNameText:{
         color:'#969595',
         width:155,
-        paddingLeft:10,
         fontFamily:'ProductSans-Medium',
 
     },
-    topArtistContainer:{
-        width:'100%',
-        alignItems:'center',
-        marginTop:20
-    },
-    topArtistImage:{
-        width:'90%',
-        height:400,
-        resizeMode:'contain',
-        marginTop:27,
-        borderRadius:20,
-        position:'relative',
-        zIndex:10
-    },
+
     topArtistText:{
         fontFamily:'ProductSans-Medium',
         color:'#fff',
         fontSize:25,
         width:'100%',
         paddingLeft:20,
-        textAlign:'center'
+        paddingTop:30
     },
-    topArtistBrightness:{
+    topArtistImageContainer:{
+        width:270,
+        height:200,
+        borderWidth:1
+    },
+    topArtistImage:{
+        width:'100%',
+        height:'100%',
+        borderRadius:8,
+    },
+    topArtistLabel:{
         position:'absolute',
-        width:'90',
-        height:400,
-        backgroundColor:'red',
-        zIndex:40,
-        top:0,
+        bottom:0,
+        width:'100%',
+        height:40,
+        backgroundColor:'rgba(255,255,255,0.5)',
+        alignItems:'center',
+        justifyContent:'center',
+        borderBottomLeftRadius:8,
+        borderBottomRightRadius:8,
+        zIndex:21
+
+    },
+    artistLabelText:{
+        color:'#fff',
+        fontSize:20,
+        fontFamily:'ProductSans-Medium',
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 2,
+
+    },
+    topArtistContainer:{
+        width:'100%'
+    },
+    brightness:{
+        position:'absolute',
+        width:'100%',
+        height:'100%',
+        backgroundColor:'rgba(0,0,0,0.3)',
+        borderRadius:8,
+        zIndex:20
+    },
+    timeWelcome:{
+        fontFamily:'ProductSans-Medium',
+        color:'#fff',
+        marginTop:10,
+        marginLeft:3
     }
+
 })
 
 export default styles
