@@ -15,11 +15,13 @@ import SettingsIcon from '../assets/SettingsIcon';
 import TopSong from '../components/TopSong';
 import LoadingSong from '../components/LoadingSong';
 import TopArtist from '../components/TopArtist';
+import Recommendations from '../components/Recommendations';
 const MainPage = () => {
 
   //States
   const [topSongs,setTopSongs] = React.useState([]);
   const [topArtist,setTopArtist] = React.useState([]);
+  const [recommendations,setRecommendations] = React.useState([]);
 
   const [name,setName] = React.useState('');
 
@@ -60,10 +62,16 @@ const MainPage = () => {
     setTopArtist(artist.data)
    }
 
+   const getRecommendations = async () =>{
+    const artists = await axios.get('http://localhost:8000/spotify-api/recommendations');
+    setRecommendations(artists.data)
+   }
+
    React.useEffect(() =>{
     getData();
     getName();
     getTopArtist();
+    getRecommendations()
    },[0])
 
 
@@ -126,6 +134,27 @@ const MainPage = () => {
 
           }
           
+
+      </View>
+
+
+      <View style={styles.recommendationsContainer}>
+          
+        <Text style={styles.topArtistText}>Artists you might like </Text>
+
+        <FlatList
+          style={styles.topSongsList}
+          horizontal={true}
+          data={recommendations}
+          renderItem={({ item, }) =>(
+            <Recommendations  artist={item} />
+          )}
+          keyExtractor={(item, index) => index}
+          ItemSeparatorComponent={()=> <View style={{width:20}}></View>}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingRight: 40,paddingLeft:5 }}
+          />
+
 
       </View>
 

@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
     container:{
         flexGrow:1,
         alignItems:'center',
-        paddingBottom:30
+        paddingBottom:80
   
     },
     linear:{
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     },
     topText:{
         color:'#fff',
-        fontSize:25,
+        fontSize:23,
         fontFamily:'ProductSans-Medium',
         paddingLeft:15,
         fontWeight:'bold'
@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
         
     },
     topSongImage:{
-        width:150,
-        height:150,
+        width:160,
+        height:160,
         resizeMode:'contain',
     },
     songNameText:{
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     topArtistText:{
         fontFamily:'ProductSans-Medium',
         color:'#fff',
-        fontSize:25,
+        fontSize:23,
         width:'100%',
         paddingLeft:20,
         paddingTop:30
@@ -124,7 +124,8 @@ const styles = StyleSheet.create({
 
     },
     topArtistContainer:{
-        width:'100%'
+        width:'100%',
+        marginTop:20
     },
     brightness:{
         position:'absolute',
@@ -139,6 +140,22 @@ const styles = StyleSheet.create({
         color:'#fff',
         marginTop:10,
         marginLeft:3
+    },
+
+    recommendationsContainer:{
+        marginTop:20,
+        width:'100%'
+    },
+    recImage:{
+        width:180,
+        height:180,
+        borderRadius:200,
+        marginTop:20
+    },
+    recText:{
+        textAlign:'center',
+        fontFamily:'ProductSans-Medium',
+
     }
 
 })
