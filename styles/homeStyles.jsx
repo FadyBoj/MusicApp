@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     recText:{
         textAlign:'center',
         fontFamily:'ProductSans-Medium',
+        width:180
 
     }
 

@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import react from 'react'
 import { View , Text, TouchableOpacity } from 'react-native';
 import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { NavigationContainer, DarkTheme,useNavigation } from '@react-navigation/native';
@@ -15,6 +16,7 @@ import EnterPassword from './screens/Password';
 import MainPage from './screens/MainPage';
 import Search from './screens/Search'
 import Library from './screens/Library';
+import Song from './screens/Song';
 //Icons
 import LeftArrow from './assets/LeftArrow';
 
@@ -23,6 +25,7 @@ import MyTabBar from './components/TabBar';
 
 
 const Stack = createStackNavigator();
+const NativeStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
@@ -58,9 +61,10 @@ const CreateAccountStack = () => {
 
 //Actual app tabs
 
-const AppTabs = ()=>{
+
+const MainTabs = ()=>{
   return(
-    <Tab.Navigator
+  <Tab.Navigator
     backBehavior='history'
     tabBar={props => <MyTabBar {...props} />}
   
@@ -71,6 +75,38 @@ const AppTabs = ()=>{
       <Tab.Screen name='Library' component={Library} />
 
     </Tab.Navigator>
+  )
+}
+
+
+const AppTabs = ()=>{
+  return(
+    
+    <NativeStack.Navigator
+    >
+
+    <Stack.Screen
+    name='mainTabs'
+    component={MainTabs}
+    options={{headerShown:false}}
+    />
+
+    <Stack.Screen
+    name='song'
+    component={Song}
+    options={{
+      presentation: 'modal',
+      animationTypeForReplace: 'push',
+      animation:'fade',
+      headerTitleAlign:'center',
+      headerTitle:"Now Playing",
+      headerStyle:{backgroundColor:'#0b0f20'}
+    }}
+
+
+    />
+
+    </NativeStack.Navigator>
   )
 }
 
@@ -89,8 +125,6 @@ const App = () =>{
           headerMode:'screen'
         }}
       >
-     
-
         <Stack.Screen 
         name="checkSigned" 
         component={CheckSigned}

@@ -1,10 +1,11 @@
-import { View, Text, Image,Animated,TouchableOpacity } from 'react-native'
+import { View, Text, Image,Animated,TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image'
 import React from 'react'
 import axios from 'axios';
 //Styles
 import styles from '../styles/homeStyles'
 
-const TopSong = ({ song }) => {
+const TopSong = ({ song, navigation }) => {
 
   const [scaleAnim,setScaleAnim] = React.useState(new Animated.Value(1))
 
@@ -24,11 +25,16 @@ const TopSong = ({ song }) => {
     }).start();
   }
 
+  const handleNavigation = ()=>{
+    navigation.navigate('song',{name:song.name,id:song.id,artist:song.artistName,image:song.image,time:song.time})
+  }
+
   return (
     <Animated.View style={[{transform:[{scale:scaleAnim}]}]}>
-      <TouchableOpacity activeOpacity={0.7} onPressIn={scaleDown} onPressOut={scaleUp}  style={styles.topSong}>
-          <Image style={styles.topSongImage}
-          source={{uri:song.image}}
+      <TouchableOpacity onPress={handleNavigation} activeOpacity={0.7} onPressIn={scaleDown} onPressOut={scaleUp}  style={styles.topSong}>
+          <FastImage style={styles.topSongImage}
+          source={{uri:song.image,cache:FastImage.cacheControl.immutable}}
+          
           />
           <View><Text numberOfLines={1} style={styles.songNameText}>{song.name}</Text></View>
 

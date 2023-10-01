@@ -16,7 +16,13 @@ import TopSong from '../components/TopSong';
 import LoadingSong from '../components/LoadingSong';
 import TopArtist from '../components/TopArtist';
 import Recommendations from '../components/Recommendations';
-const MainPage = () => {
+const MainPage = ({ navigation }) => {
+
+  function cleanTime(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  }
 
   //States
   const [topSongs,setTopSongs] = React.useState([]);
@@ -36,7 +42,8 @@ const MainPage = () => {
         name:song.track.name,
         artistName:song.track.album.artists[0].name,
         artistId:song.track.album.artists[0].id,
-        image:song.track.album.images[0].url
+        image:song.track.album.images[0].url,
+        time:cleanTime(song.track.duration_ms)
       }
 
       songsInfo.push(newSong)
@@ -112,7 +119,7 @@ const MainPage = () => {
             horizontal={true}
             data={topSongs}
             renderItem={({ item }) => (
-              <TopSong song={item} />
+              <TopSong navigation={navigation} song={item} />
             )}
             ItemSeparatorComponent={()=> <View style={{width:13}}></View>}
             showsHorizontalScrollIndicator={false}
