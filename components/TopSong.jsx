@@ -5,7 +5,8 @@ import axios from 'axios';
 //Styles
 import styles from '../styles/homeStyles'
 
-const TopSong = ({ song, navigation }) => {
+const TopSong = ({ song, navigation, index, TrackPlayer }) => {
+  
 
   const [scaleAnim,setScaleAnim] = React.useState(new Animated.Value(1))
 
@@ -26,7 +27,7 @@ const TopSong = ({ song, navigation }) => {
   }
 
   const handleNavigation = ()=>{
-    navigation.navigate('song',{name:song.name,id:song.id,artist:song.artistName,image:song.image,time:song.time})
+    navigation.navigate('song',{name:song.name,id:song.id,artist:song.artistName,image:song.image,time:song.time,index:index})
   }
 
   return (

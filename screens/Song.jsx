@@ -5,6 +5,7 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Slider } from '@rneui/themed';
+import TrackPlayer from 'react-native-track-player';
 // Styles
 import styles from '../styles/SongStyles';
 
@@ -15,10 +16,24 @@ import PreviousIcon from '../assets/PreviousIcons';
 import DownloadIcon from '../assets/DowloadIcon';
 
 
-
 const Song = ({ navigation,route }) => {
 
-    const { id, name, artist, image, time  } = route.params;
+    const { id, name, artist, image, time, index  } = route.params;
+
+    const playSong = async() =>{
+      await TrackPlayer.skip(index)
+      await TrackPlayer.play(index)
+
+    
+    }
+
+
+    
+    function cleanTime(millis) {
+      var minutes = Math.floor(millis / 60000);
+      var seconds = ((millis % 60000) / 1000).toFixed(0);
+      return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    }
 
     const [songExist,setSongExist] = React.useState(false);
     const [isLoading,setIsLoading] = React.useState(false);
@@ -32,6 +47,8 @@ const Song = ({ navigation,route }) => {
         {
           console.log("Exist")
           setSongExist(true)
+          playSong()
+
         }
         else{
           console.log("Not exist")
@@ -41,7 +58,11 @@ const Song = ({ navigation,route }) => {
       }
     }
 
-    checkSong()
+    React.useEffect(() =>{
+      checkSong()
+
+    })
+
     
     const addItem = async () =>{
       try {
@@ -149,7 +170,7 @@ const Song = ({ navigation,route }) => {
 
         <View style={styles.songDurations}>
           <Text>0:00</Text>
-          <Text>{time}</Text>
+          <Text>{cleanTime(time)}</Text>
 
         </View>
 
@@ -165,8 +186,8 @@ const Song = ({ navigation,route }) => {
             <ActivityIndicator size='large'/>
             :(
               songExist ?
-              <TouchableOpacity>
-                <PlayIcon width={20} height={20}/>
+              <TouchableOpacity onPress={playSong}>
+                <PlayIcon  width={20} height={20}/>
               </TouchableOpacity>
               :
             <TouchableOpacity onPress={handleDownload}>

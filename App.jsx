@@ -1,12 +1,15 @@
 import 'react-native-gesture-handler';
 import react from 'react'
-import { View , Text, TouchableOpacity } from 'react-native';
+import { View , Text, TouchableOpacity, AppRegistry } from 'react-native';
 import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 import { NavigationContainer, DarkTheme,useNavigation } from '@react-navigation/native';
 import { TransitionPresets } from '@react-navigation/stack';
+import TrackPlayer from 'react-native-track-player';
+AppRegistry.registerComponent('Megnwene', () => App);
+TrackPlayer.registerPlaybackService(() => require('./service.js'));
+
 //screens
 import CheckSigned from './screens/CheckSigned';
 import Home from './screens/Home';

@@ -4,7 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
-import JohnWick from '../assets/John-wick.jpg'
+import JohnWick from '../assets/John-wick.jpg';
+import TrackPlayer from 'react-native-track-player';
+
+import { DownloadDirectoryPath } from 'react-native-fs'
 //Styles
 import styles from '../styles/homeStyles';
 
@@ -18,11 +21,8 @@ import TopArtist from '../components/TopArtist';
 import Recommendations from '../components/Recommendations';
 const MainPage = ({ navigation }) => {
 
-  function cleanTime(millis) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-  }
+
+  
 
   //States
   const [topSongs,setTopSongs] = React.useState([]);
@@ -43,7 +43,7 @@ const MainPage = ({ navigation }) => {
         artistName:song.track.album.artists[0].name,
         artistId:song.track.album.artists[0].id,
         image:song.track.album.images[0].url,
-        time:cleanTime(song.track.duration_ms)
+        time:song.track.duration_ms
       }
 
       songsInfo.push(newSong)
@@ -78,11 +78,35 @@ const MainPage = ({ navigation }) => {
     getData();
     getName();
     getTopArtist();
-    getRecommendations()
+    getRecommendations();
+
+    
+   
+
    },[0])
 
 
+   React.useEffect(() =>{
+    if(topSongs.length === 0){
+    return;
+    }
 
+    const playList = topSongs.map((item)=>{
+      return {
+        url:`${DownloadDirectoryPath}/${item.artistName} - ${item.name}.mp3`,
+        title:item.name,
+        album:item.artistName,
+        duration:(item.time / 1000)
+      }
+    })
+
+
+    TrackPlayer.setupPlayer().then(async() =>{
+      await TrackPlayer.add(playList);
+      
+    })
+
+   },[topSongs])
   
 
   return (
@@ -118,8 +142,8 @@ const MainPage = ({ navigation }) => {
             style={styles.topSongsList}
             horizontal={true}
             data={topSongs}
-            renderItem={({ item }) => (
-              <TopSong navigation={navigation} song={item} />
+            renderItem={({ item,index }) => (
+              <TopSong index={index} navigation={navigation} song={item} />
             )}
             ItemSeparatorComponent={()=> <View style={{width:13}}></View>}
             showsHorizontalScrollIndicator={false}
