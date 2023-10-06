@@ -5,7 +5,6 @@ import React from 'react';
 import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
 import JohnWick from '../assets/John-wick.jpg';
-import TrackPlayer from 'react-native-track-player';
 
 import { DownloadDirectoryPath } from 'react-native-fs'
 //Styles
@@ -35,7 +34,7 @@ const MainPage = ({ navigation }) => {
     const { data } = await axios.get('http://localhost:8000/spotify-api/top-songs');
     let songsInfo = [];
 
-    data.songs.map((song) =>{
+    data.songs.map((song,index) =>{
 
       const newSong = {
         id:song.track.id,
@@ -43,7 +42,8 @@ const MainPage = ({ navigation }) => {
         artistName:song.track.album.artists[0].name,
         artistId:song.track.album.artists[0].id,
         image:song.track.album.images[0].url,
-        time:song.track.duration_ms
+        time:song.track.duration_ms,
+        index:index
       }
 
       songsInfo.push(newSong)
@@ -86,28 +86,7 @@ const MainPage = ({ navigation }) => {
    },[0])
 
 
-   React.useEffect(() =>{
-    if(topSongs.length === 0){
-    return;
-    }
-
-    const playList = topSongs.map((item)=>{
-      return {
-        url:`${DownloadDirectoryPath}/${item.artistName} - ${item.name}.mp3`,
-        title:item.name,
-        album:item.artistName,
-        duration:(item.time / 1000)
-      }
-    })
-
-
-    TrackPlayer.setupPlayer().then(async() =>{
-      await TrackPlayer.add(playList);
-      
-    })
-
-   },[topSongs])
-  
+   
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -143,7 +122,7 @@ const MainPage = ({ navigation }) => {
             horizontal={true}
             data={topSongs}
             renderItem={({ item,index }) => (
-              <TopSong index={index} navigation={navigation} song={item} />
+              <TopSong allSongs={topSongs} index={index} navigation={navigation} song={item} />
             )}
             ItemSeparatorComponent={()=> <View style={{width:13}}></View>}
             showsHorizontalScrollIndicator={false}

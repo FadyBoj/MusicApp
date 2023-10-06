@@ -1,10 +1,14 @@
 import { StyleSheet } from "react-native";
+import { Dimensions } from "react-native";
+
+const deviceWidth = Dimensions.get('window').width
+
 
 const styles = StyleSheet.create({
     container:{
         alignItems:'center',
         paddingTop:40,
-        width:'100%',
+        width:deviceWidth,
         flex:1,
         backgroundColor:'#0b0f20'
     },

@@ -6,9 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DarkTheme,useNavigation } from '@react-navigation/native';
 import { TransitionPresets } from '@react-navigation/stack';
-import TrackPlayer from 'react-native-track-player';
-AppRegistry.registerComponent('Megnwene', () => App);
-TrackPlayer.registerPlaybackService(() => require('./service.js'));
+
 
 //screens
 import CheckSigned from './screens/CheckSigned';
@@ -82,6 +80,8 @@ const MainTabs = ()=>{
 }
 
 
+
+
 const AppTabs = ()=>{
   return(
     
@@ -96,14 +96,15 @@ const AppTabs = ()=>{
 
     <Stack.Screen
     name='song'
+    
     component={Song}
     options={{
-      presentation: 'modal',
       animationTypeForReplace: 'push',
-      animation:'fade',
       headerTitleAlign:'center',
       headerTitle:"Now Playing",
-      headerStyle:{backgroundColor:'#0b0f20'}
+      headerStyle:{backgroundColor:'#0b0f20'},
+      animation:'fade',
+  
     }}
 
 
