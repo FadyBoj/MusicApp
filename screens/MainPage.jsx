@@ -20,6 +20,9 @@ import TopArtist from '../components/TopArtist';
 import Recommendations from '../components/Recommendations';
 const MainPage = ({ navigation }) => {
 
+  global.PLAYING_SONG = '';
+  global.GLOBAL_SONG_NAME = '';
+
   const isExist = async(artistName,songName) =>{
     const fileUrl = `${DownloadDirectoryPath}/${artistName} - ${songName}.mp3`
     const exist = await RNFS.exists(fileUrl);

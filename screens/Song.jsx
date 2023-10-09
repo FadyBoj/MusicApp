@@ -7,10 +7,11 @@ import { View,
   FlatList
 } from 'react-native';
 import RNFS , { DownloadDirectoryPath } from 'react-native-fs';
+import { LogBox } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
 import React, { useMemo } from 'react';
 import FastImage from 'react-native-fast-image';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Sound from 'react-native-sound';
 import { Slider } from '@rneui/themed';
 import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
@@ -31,19 +32,33 @@ import { exists } from '../server/models/user';
 
 const Song = ({ navigation,route }) => {
 
-    const { id, name, artist, image, time, index, updateTopSongs  } = route.params;
-    const deviceWidth = Dimensions.get('window').width;
+    // Enable playback in silence mode
+    Sound.setCategory('Playback');
+        
 
+
+    //Start
+    
+
+    const { id, name, artist, image, time, index, updateTopSongs  } = route.params;
+
+
+    
+    const deviceWidth = Dimensions.get('window').width;
+    const deviceHeight = Dimensions.get('window').height;
 
     const [songExist,setSongExist] = React.useState(false);
     const [isLoading,setIsLoading] = React.useState(false);
     const [isPlaying,setIsPlaying] = React.useState(false);    
     const [scrollable,setScrollable] = React.useState(true);
     const [allSongs,setAllSongs] = React.useState(route.params.allSongs);
+    const [playableSongName,setPlayableSongName] = React.useState(
+      `${DownloadDirectoryPath}/${artist} - ${name}.mp3`
+    )
 
     function cleanTime(millis) {
-      var minutes = Math.floor(millis / 60000);
-      var seconds = ((millis % 60000) / 1000).toFixed(0);
+      const minutes = Math.floor(millis / 60000);
+      const seconds = ((millis % 60000) / 1000).toFixed(0);
       return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }
 
@@ -89,8 +104,44 @@ const Song = ({ navigation,route }) => {
       downloadFile(artistName,songName,itemIndex);
     }
 
-    
+       // Ignoring useless warning
+       LogBox.ignoreLogs([
+        'Non-serializable values were found in the navigation state',
+      ]);
 
+
+      React.useEffect(() =>{
+        if(allSongs[index])
+
+        if(PLAYING_SONG)
+        {
+          if(GLOBAL_SONG_NAME !== playableSongName)
+          PLAYING_SONG.stop();
+        }
+
+        if(GLOBAL_SONG_NAME !== playableSongName){
+        const playableSong = new Sound(playableSongName, Sound.MAIN_BUNDLE, (error) => {
+          if (error) {
+            console.log('failed to load the sound', error);
+            return;
+          }
+          // loaded successfully
+          console.log('duration in seconds: ' + playableSong.getDuration() + 'number of channels: ' + playableSong.getNumberOfChannels());
+          PLAYING_SONG = playableSong;
+          GLOBAL_SONG_NAME = playableSongName
+          // Play the sound with an onEnd callback
+          playableSong.play((success) => {
+            if (success) {
+              console.log('successfully finished playing');
+            } else {
+              console.log('playback failed due to audio decoding errors');
+            }
+          });
+        });
+      }
+      },[playableSongName])
+    
+      
 
   return (
     <FlatList
