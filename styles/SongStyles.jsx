@@ -56,17 +56,20 @@ const styles = StyleSheet.create({
         width:'100%',
         alignItems:'center',
         justifyContent:'center',
-        gap:10
-  
+        gap:10,
+   
     },
     time:{
         alignItems:'center',
         justifyContent:'center',
-    },
+     },
     songDurations:{
         flexDirection:'row',
         width:'80%',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+    },
+    timeText:{
+        color:"#fff"
     }
 })
 

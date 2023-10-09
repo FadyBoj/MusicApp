@@ -1,12 +1,12 @@
 import { View, Text, ScrollView, Image, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
 
 import React from 'react';
 import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
 import JohnWick from '../assets/John-wick.jpg';
 
-import { DownloadDirectoryPath } from 'react-native-fs'
 //Styles
 import styles from '../styles/homeStyles';
 
@@ -20,7 +20,11 @@ import TopArtist from '../components/TopArtist';
 import Recommendations from '../components/Recommendations';
 const MainPage = ({ navigation }) => {
 
-
+  const isExist = async(artistName,songName) =>{
+    const fileUrl = `${DownloadDirectoryPath}/${artistName} - ${songName}.mp3`
+    const exist = await RNFS.exists(fileUrl);
+    return exist;
+  }
   
 
   //States
@@ -34,7 +38,7 @@ const MainPage = ({ navigation }) => {
     const { data } = await axios.get('http://localhost:8000/spotify-api/top-songs');
     let songsInfo = [];
 
-    data.songs.map((song,index) =>{
+    data.songs.map(async(song,index) =>{
 
       const newSong = {
         id:song.track.id,
@@ -43,7 +47,8 @@ const MainPage = ({ navigation }) => {
         artistId:song.track.album.artists[0].id,
         image:song.track.album.images[0].url,
         time:song.track.duration_ms,
-        index:index
+        index:index,
+        exist:await isExist(song.track.album.artists[0].name,song.track.name)
       }
 
       songsInfo.push(newSong)
@@ -81,11 +86,16 @@ const MainPage = ({ navigation }) => {
     getRecommendations();
 
     
-   
-
+  
    },[0])
 
-
+   const updateTopSongs = (songId) =>{
+    setTopSongs((prevSongs) =>{
+      return prevSongs.map((song) =>{
+        return song.index === songId ? {...song,exist:true} : song
+      })
+    })
+   }
    
 
   return (
@@ -122,7 +132,12 @@ const MainPage = ({ navigation }) => {
             horizontal={true}
             data={topSongs}
             renderItem={({ item,index }) => (
-              <TopSong allSongs={topSongs} index={index} navigation={navigation} song={item} />
+              <TopSong 
+              updateTopSongs={updateTopSongs}
+              allSongs={topSongs}
+              index={index}
+              navigation={navigation}
+              song={item} />
             )}
             ItemSeparatorComponent={()=> <View style={{width:13}}></View>}
             showsHorizontalScrollIndicator={false}

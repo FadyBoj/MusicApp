@@ -1,11 +1,26 @@
 import { View, Text, Image,Animated,TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image'
-import React from 'react'
+import React, {useCallback} from 'react'
 import axios from 'axios';
+import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
 //Styles
 import styles from '../styles/homeStyles'
 
-const TopSong = ({ song, navigation, index, TrackPlayer, allSongs }) => {
+const TopSong = ({ song, navigation, index, TrackPlayer, allSongs, updateTopSongs }) => {
+
+  const fileUrl = `${DownloadDirectoryPath}/${song.artistName} - ${song.name}.mp3`
+  const [exist,setExist] = React.useState(false);
+
+  React.useEffect(() =>{
+
+    RNFS.exists(fileUrl)
+    .then((exist) =>{
+      setExist(exist);
+    });
+    
+  },[0])
+
+
   
 
   const [scaleAnim,setScaleAnim] = React.useState(new Animated.Value(1))
@@ -34,7 +49,9 @@ const TopSong = ({ song, navigation, index, TrackPlayer, allSongs }) => {
       image:song.image,
       time:song.time,
       index:index,
-      allSongs:allSongs
+      allSongs:allSongs,
+      exist:exist,
+      updateTopSongs:updateTopSongs
 
     })
   }

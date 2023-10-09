@@ -8,7 +8,7 @@ const Search = ({navigation}) => {
 
 
   return (
-    <View style={{backgroundColor:'red',flex:1}}>
+    <View style={{flex:1}}>
       <Text>Search</Text>
     </View>
   )

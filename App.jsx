@@ -104,6 +104,7 @@ const AppTabs = ()=>{
       headerTitle:"Now Playing",
       headerStyle:{backgroundColor:'#0b0f20'},
       animation:'fade',
+      headerShadowVisible:false
   
     }}
 

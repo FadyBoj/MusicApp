@@ -8,7 +8,7 @@ import { View,
 } from 'react-native';
 import RNFS , { DownloadDirectoryPath } from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
-import React, { memo } from 'react';
+import React, { useMemo } from 'react';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Slider } from '@rneui/themed';
@@ -27,17 +27,19 @@ import NextIcon from '../assets/NextIcon';
 import PreviousIcon from '../assets/PreviousIcons';
 import DownloadIcon from '../assets/DowloadIcon';
 import PauseIcon from '../assets/PauseIcon';
+import { exists } from '../server/models/user';
 
 const Song = ({ navigation,route }) => {
 
-    const { id, name, artist, image, time, index, allSongs  } = route.params;
+    const { id, name, artist, image, time, index, updateTopSongs  } = route.params;
     const deviceWidth = Dimensions.get('window').width;
 
 
     const [songExist,setSongExist] = React.useState(false);
     const [isLoading,setIsLoading] = React.useState(false);
     const [isPlaying,setIsPlaying] = React.useState(false);    
-
+    const [scrollable,setScrollable] = React.useState(true);
+    const [allSongs,setAllSongs] = React.useState(route.params.allSongs);
 
     function cleanTime(millis) {
       var minutes = Math.floor(millis / 60000);
@@ -46,9 +48,11 @@ const Song = ({ navigation,route }) => {
     }
 
 
-    const downloadFile =  () =>{
-      const fileUrl = `http://localhost:8000/spotify-api/audio?name=${artist} ${name}`;
-      fileName = `${artist} - ${name}`;
+    const downloadFile =  (artistName,songName,itemIndex) =>{
+      setIsLoading(true);
+      setScrollable(false)
+      const fileUrl = `http://localhost:8000/spotify-api/audio?name=${artistName} ${songName}`;
+      fileName = `${artistName} - ${songName}`;
       const downloadDest = `${DownloadDirectoryPath}/${fileName}.mp3`;
       RNFetchBlob.config({
         fileCache:true,
@@ -63,9 +67,16 @@ const Song = ({ navigation,route }) => {
       })
       .fetch('GET',fileUrl)
       .then((res) =>{
-        addItem();
+        updateTopSongs(itemIndex);
+
+        //Update songs
+        setAllSongs((prevSongs) =>{
+          return prevSongs.map((song) =>{
+            return song.index === itemIndex ? {...song,exist:true} : song
+          })
+        })
         setIsLoading(false);
-        setSongExist(true)
+        setScrollable(true)
       })
       .catch((err) =>{
         console.log("SADa")
@@ -74,22 +85,17 @@ const Song = ({ navigation,route }) => {
 
     }
 
-
-
-
-
-    const handleDownload = () =>{
-      setIsLoading(true);
-      downloadFile();
+    const handleDownload = (artistName,songName,itemIndex) =>{
+      downloadFile(artistName,songName,itemIndex);
     }
 
-
-
-
+    
 
 
   return (
     <FlatList
+    extraData={[allSongs]}
+    scrollEnabled={scrollable}
     data={allSongs}
     initialNumToRender={2}
     initialScrollIndex={index}
@@ -101,7 +107,6 @@ const Song = ({ navigation,route }) => {
       index,
     })}
     horizontal={true}
-    onViewableItemsChanged={()=> console.log("Changed")}
     viewabilityConfig={{
       itemVisiblePercentThreshold: 50
     }}
@@ -114,11 +119,11 @@ const Song = ({ navigation,route }) => {
             style={styles.songImage}
             source={{
               uri:item.image,
-              cache:FastImage.cacheControl.cacheOnly
+              cache:FastImage.cacheControl.immutable
             }}
             />
             <Text style={styles.songNameText}>{item.name}</Text>
-            <Text style={styles.artistNameText}>{artist}</Text>
+            <Text style={styles.artistNameText}>{item.artistName}</Text>
     
             <View style={styles.timing}>
               <Slider 
@@ -134,8 +139,8 @@ const Song = ({ navigation,route }) => {
               />
     
               <View style={styles.songDurations}>
-                <Text>{cleanTime(0)}</Text>
-                <Text>{cleanTime(time)}</Text>
+                <Text style={styles.timeText}>{cleanTime(0)}</Text>
+                <Text style={styles.timeText}>{cleanTime(time)}</Text>
     
               </View>
     
@@ -150,7 +155,7 @@ const Song = ({ navigation,route }) => {
                   isLoading?
                   <ActivityIndicator size='large'/>
                   :(
-                    songExist ?
+                    item.exist ?
                     (
                       !isPlaying ?
                       <TouchableOpacity onPress={()=>{navigation.replace('song')}}>
@@ -162,7 +167,7 @@ const Song = ({ navigation,route }) => {
                       </TouchableOpacity>
                     )
                     :
-                  <TouchableOpacity onPress={handleDownload}>
+                  <TouchableOpacity onPress={()=>{handleDownload(item.artistName,item.name,item.index)}}>
                     <DownloadIcon  width={20} height={20} />
                   </TouchableOpacity>
                   )
@@ -185,4 +190,4 @@ const Song = ({ navigation,route }) => {
   )
 }
 
-export default Song
+export default React.memo(Song)
