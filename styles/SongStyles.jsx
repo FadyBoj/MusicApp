@@ -2,15 +2,20 @@ import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
 
 const deviceWidth = Dimensions.get('window').width
+const deviceHeight = Dimensions.get('window').height
+
 
 
 const styles = StyleSheet.create({
     container:{
         alignItems:'center',
-        paddingTop:40,
+        paddingTop:120,
         width:deviceWidth,
         flex:1,
-        backgroundColor:'#0b0f20'
+        height:deviceHeight,
+        backgroundColor:'#0b0f20',
+        position:'absolute',
+        top:0
     },
     songImage:{
         width:300,

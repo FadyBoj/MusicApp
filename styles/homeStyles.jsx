@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
     container:{
         flexGrow:1,
         alignItems:'center',
-        paddingBottom:80
+        paddingBottom:80,
+        position:'relative'
   
     },
     linear:{

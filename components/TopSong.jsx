@@ -6,7 +6,7 @@ import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
 //Styles
 import styles from '../styles/homeStyles'
 
-const TopSong = ({ song, navigation, index, TrackPlayer, allSongs, updateTopSongs }) => {
+const TopSong = ({ song, navigation, index, TrackPlayer, allSongs, updateTopSongs, setTopSongs }) => {
 
   const fileUrl = `${DownloadDirectoryPath}/${song.artistName} - ${song.name}.mp3`
   const [exist,setExist] = React.useState(false);
@@ -51,14 +51,15 @@ const TopSong = ({ song, navigation, index, TrackPlayer, allSongs, updateTopSong
       index:index,
       allSongs:allSongs,
       exist:exist,
-      updateTopSongs:updateTopSongs
+      updateTopSongs:updateTopSongs,
+      setTopSongs:setTopSongs
 
     })
   }
 
   return (
     <Animated.View style={[{transform:[{scale:scaleAnim}]}]}>
-      <TouchableOpacity onPress={handleNavigation} activeOpacity={0.7} onPressIn={scaleDown} onPressOut={scaleUp}  style={styles.topSong}>
+      <TouchableOpacity onPress={()=>{}} activeOpacity={0.7} onPressIn={scaleDown} onPressOut={scaleUp}  style={styles.topSong}>
           <FastImage style={styles.topSongImage}
           source={{uri:song.image,cache:FastImage.cacheControl.immutable}}
           

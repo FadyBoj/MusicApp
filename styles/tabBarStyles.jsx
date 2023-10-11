@@ -5,13 +5,14 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:'center',
         gap:40,
-        paddingBottom:10,
-        paddingTop:10,
+        paddingBottom:0,
+        paddingTop:12,
         bottom:0,
         backgroundColor:'rgba(0, 0, 0, 0.847)',
         position:"absolute",
         width:'100%',
-        alignItems:'center'
+        alignItems:'center',
+        zIndex:90,
     },
     tabItem:{
         flexDirection:'column',

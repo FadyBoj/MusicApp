@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Animated } from 'react-native'
 import React from 'react'
 
 //Styles
@@ -8,14 +8,46 @@ import styles  from '../styles/tabBarStyles';
 import HomeIcon from '../assets/Home';
 import SearchIcon from '../assets/SearchIcon';
 import LibraryIcon from '../assets/LibraryIcon';
-const TabBar = ({state, descriptors, navigation}) => {
+const TabBar = ({state, descriptors, navigation, tabBarVisible}) => {
+
+  const downAnim = React.useRef(new Animated.Value(0)).current
+  
+  const goDown = () =>{
+    Animated.timing(
+      downAnim,{
+        toValue:50,
+        duration:500,
+        useNativeDriver:true
+      }
+    ).start()
+  }
+
+  const goUp = () =>{
+    Animated.timing(
+      downAnim,{
+        toValue:0,
+        duration:500,
+        useNativeDriver:true
+      }
+    ).start()
+  }
 
 
+  React.useEffect(() =>{
 
 
+    if(tabBarVisible)
+    {
+      goUp();
+    }
+    else{
+      goDown();
+    }
+
+  },[tabBarVisible])
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container,{transform:[{translateY:downAnim}]}]}>
 
       {
         state.routes.map((route,index) =>{
@@ -24,9 +56,9 @@ const TabBar = ({state, descriptors, navigation}) => {
             const isActive = state.index === index ;
 
             const tabIcons = [
-                <HomeIcon active={isActive ? true : false} width={30} height={30} />,
-                <SearchIcon active={isActive ? true : false} width={30} height={30}/>,
-                <LibraryIcon active={isActive ? true : false}  width={30} height={30} />
+                <HomeIcon active={isActive ? true : false} width={24} height={24} />,
+                <SearchIcon active={isActive ? true : false} width={24} height={24}/>,
+                <LibraryIcon active={isActive ? true : false}  width={24} height={24} />
             ]
 
 
@@ -56,7 +88,7 @@ const TabBar = ({state, descriptors, navigation}) => {
       }
 
         
-    </View>
+    </Animated.View>
   )
 }
 

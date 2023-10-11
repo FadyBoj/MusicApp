@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import react from 'react'
+import React from 'react'
 import { View , Text, TouchableOpacity, AppRegistry } from 'react-native';
 import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
@@ -64,14 +64,24 @@ const CreateAccountStack = () => {
 
 
 const MainTabs = ()=>{
+  const [tabBarVisible,setTabBarVisible] = React.useState(true);
+
   return(
   <Tab.Navigator
     backBehavior='history'
-    tabBar={props => <MyTabBar {...props} />}
+    tabBar={props => <MyTabBar {...props} 
+    tabBarVisible={tabBarVisible}
+     />}
   
     >
 
-      <Tab.Screen options={{headerShown:false}} name='Home' component={MainPage} />
+      <Tab.Screen 
+      options={{headerShown:false}}
+      name='Home'
+      component={MainPage}
+      initialParams={{setTabBarVisible}}
+           />
+
       <Tab.Screen name='Search' component={Search} />
       <Tab.Screen name='Library' component={Library} />
 

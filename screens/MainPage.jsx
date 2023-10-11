@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, FlatList } from 'react-native';
+import { View, Text, ScrollView, Image, FlatList,TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
 
@@ -18,7 +18,11 @@ import TopSong from '../components/TopSong';
 import LoadingSong from '../components/LoadingSong';
 import TopArtist from '../components/TopArtist';
 import Recommendations from '../components/Recommendations';
-const MainPage = ({ navigation }) => {
+import Song from './Song';
+import { TouchEventType } from 'react-native-gesture-handler/lib/typescript/TouchEventType';
+const MainPage = ({ navigation, route }) => {
+
+  const { setTabBarVisible } = route.params;
 
   global.PLAYING_SONG = '';
   global.GLOBAL_SONG_NAME = '';
@@ -51,6 +55,7 @@ const MainPage = ({ navigation }) => {
         image:song.track.album.images[0].url,
         time:song.track.duration_ms,
         index:index,
+        isPlaying:false,
         exist:await isExist(song.track.album.artists[0].name,song.track.name)
       }
 
@@ -103,6 +108,7 @@ const MainPage = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      { topSongs.length > 0 &&  <Song songs={topSongs} />}
       <LinearGradient 
       colors={['#023166','#000000']}
       style={styles.linear}
@@ -119,7 +125,7 @@ const MainPage = ({ navigation }) => {
 
         <View style={styles.settingContainer}>
           <View style={styles.settingsIconContainer}>
-            <SettingsIcon style={styles.settingsIcon} width={36} height={36}/>
+            <TouchableOpacity onPress={()=>{setTabBarVisible(prev => !prev)}}><SettingsIcon style={styles.settingsIcon} width={36} height={36}/></TouchableOpacity>
           </View>
           <Image  style={styles.profileImage} source={JohnWick} />
         </View>
@@ -137,6 +143,7 @@ const MainPage = ({ navigation }) => {
             renderItem={({ item,index }) => (
               <TopSong 
               updateTopSongs={updateTopSongs}
+              setTopSongs={setTopSongs}
               allSongs={topSongs}
               index={index}
               navigation={navigation}
