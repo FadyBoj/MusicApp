@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
         flex:1,
         height:deviceHeight,
         backgroundColor:'#0b0f20',
-        position:'absolute',
-        top:0
+        zIndex:200,
     },
     songImage:{
         width:300,

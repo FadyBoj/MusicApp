@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Animated } from 'react-native'
+import { View, Text, TouchableOpacity, Animated, Dimensions } from 'react-native'
 import React from 'react'
 
 //Styles
@@ -8,25 +8,54 @@ import styles  from '../styles/tabBarStyles';
 import HomeIcon from '../assets/Home';
 import SearchIcon from '../assets/SearchIcon';
 import LibraryIcon from '../assets/LibraryIcon';
-const TabBar = ({state, descriptors, navigation, tabBarVisible}) => {
+
+//Components
+import Song from '../screens/Song';
+
+
+const TabBar = ({state, descriptors, navigation, tabBarVisible, trackPlayerSongs}) => {
+
+  const deviceWidth = Dimensions.get('window').width;
+  const deviceHeight = Dimensions.get('window').height;
 
   const downAnim = React.useRef(new Animated.Value(0)).current
-  
+  const trackAnim = React.useRef(new Animated.Value(0)).current
+
   const goDown = () =>{
-    Animated.timing(
+    Animated.spring(
       downAnim,{
         toValue:50,
-        duration:500,
+        duration:1,
         useNativeDriver:true
       }
     ).start()
   }
 
   const goUp = () =>{
-    Animated.timing(
+    Animated.spring(
       downAnim,{
         toValue:0,
-        duration:500,
+        duration:1,
+        useNativeDriver:true
+      }
+    ).start()
+  }
+
+  const trackPlayerDown = () =>{
+    Animated.timing(
+      trackAnim,{
+        toValue:deviceHeight,
+        duration:300,
+        useNativeDriver:true
+      }
+    ).start()
+  }
+
+  const trackPlayerUp = () =>{
+    Animated.timing(
+      trackAnim,{
+        toValue:0,
+        duration:300,
         useNativeDriver:true
       }
     ).start()
@@ -39,15 +68,23 @@ const TabBar = ({state, descriptors, navigation, tabBarVisible}) => {
     if(tabBarVisible)
     {
       goUp();
+      trackPlayerDown()
     }
     else{
       goDown();
+      trackPlayerUp()
     }
 
   },[tabBarVisible])
 
   return (
-    <Animated.View style={[styles.container,{transform:[{translateY:downAnim}]}]}>
+    <View style={{position:'relative'}}>
+
+    <Animated.View style={[styles.trackPlayer,{translateY:trackAnim}]}>
+      {trackPlayerSongs.length > 0 && <Song songs={trackPlayerSongs} />}
+    </Animated.View>
+
+    <Animated.View style={[styles.container,{translateY:downAnim}]}>
 
       {
         state.routes.map((route,index) =>{
@@ -87,8 +124,10 @@ const TabBar = ({state, descriptors, navigation, tabBarVisible}) => {
         })
       }
 
+
         
     </Animated.View>
+    </View>
   )
 }
 

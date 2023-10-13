@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react'
-import { View , Text, TouchableOpacity, AppRegistry } from 'react-native';
+import { View , Text, TouchableOpacity, BackHandler } from 'react-native';
 import { CardStyleInterpolators, TransitionSpecs, createStackNavigator } from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -65,12 +65,30 @@ const CreateAccountStack = () => {
 
 const MainTabs = ()=>{
   const [tabBarVisible,setTabBarVisible] = React.useState(true);
+  const [trackPlayerSongs,setTrackPlayerSongs] = React.useState([]);
+
+  React.useEffect(() => {
+    const backAction = () => {
+      if(!tabBarVisible){
+      setTabBarVisible(true)
+      }
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [tabBarVisible]);
 
   return(
   <Tab.Navigator
     backBehavior='history'
     tabBar={props => <MyTabBar {...props} 
     tabBarVisible={tabBarVisible}
+    trackPlayerSongs={trackPlayerSongs}
      />}
   
     >
@@ -79,7 +97,7 @@ const MainTabs = ()=>{
       options={{headerShown:false}}
       name='Home'
       component={MainPage}
-      initialParams={{setTabBarVisible}}
+      initialParams={{setTabBarVisible,setTrackPlayerSongs}}
            />
 
       <Tab.Screen name='Search' component={Search} />

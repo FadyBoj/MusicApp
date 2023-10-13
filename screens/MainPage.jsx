@@ -1,7 +1,11 @@
 import { View, Text, ScrollView, Image, FlatList,TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 import React from 'react';
 import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,12 +22,13 @@ import TopSong from '../components/TopSong';
 import LoadingSong from '../components/LoadingSong';
 import TopArtist from '../components/TopArtist';
 import Recommendations from '../components/Recommendations';
-import Song from './Song';
 import { TouchEventType } from 'react-native-gesture-handler/lib/typescript/TouchEventType';
 const MainPage = ({ navigation, route }) => {
 
-  const { setTabBarVisible } = route.params;
+  const { setTabBarVisible, setTrackPlayerSongs  } = route.params;
 
+
+  
   global.PLAYING_SONG = '';
   global.GLOBAL_SONG_NAME = '';
 
@@ -93,9 +98,14 @@ const MainPage = ({ navigation, route }) => {
     getTopArtist();
     getRecommendations();
 
-    
-  
    },[0])
+
+
+   React.useEffect(() =>{
+
+    setTrackPlayerSongs(topSongs)
+
+   },[topSongs])
 
    const updateTopSongs = (songId) =>{
     setTopSongs((prevSongs) =>{
@@ -108,8 +118,7 @@ const MainPage = ({ navigation, route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      { topSongs.length > 0 &&  <Song songs={topSongs} />}
-      <LinearGradient 
+       <LinearGradient 
       colors={['#023166','#000000']}
       style={styles.linear}
       locations={[0,0.6]}
@@ -125,7 +134,9 @@ const MainPage = ({ navigation, route }) => {
 
         <View style={styles.settingContainer}>
           <View style={styles.settingsIconContainer}>
-            <TouchableOpacity onPress={()=>{setTabBarVisible(prev => !prev)}}><SettingsIcon style={styles.settingsIcon} width={36} height={36}/></TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+              setTabBarVisible(prev => !prev)
+              }}><SettingsIcon style={styles.settingsIcon} width={36} height={36}/></TouchableOpacity>
           </View>
           <Image  style={styles.profileImage} source={JohnWick} />
         </View>
@@ -138,6 +149,7 @@ const MainPage = ({ navigation, route }) => {
           { topSongs.length > 0 ?
             <FlatList
             style={styles.topSongsList}
+            extraData={topSongs}
             horizontal={true}
             data={topSongs}
             renderItem={({ item,index }) => (
@@ -157,6 +169,7 @@ const MainPage = ({ navigation, route }) => {
 
             <FlatList
             style={styles.topSongsList}
+            extraData={topSongs}
             horizontal={true}
             data={[1,2,3,4]}
             renderItem={({ item }) => (
@@ -179,6 +192,7 @@ const MainPage = ({ navigation, route }) => {
 
         <FlatList
           style={styles.topSongsList}
+          extraData={topSongs}
           horizontal={true}
           data={recommendations}
           renderItem={({ item, }) =>(
@@ -201,6 +215,7 @@ const MainPage = ({ navigation, route }) => {
 
           <FlatList
           style={styles.topSongsList}
+          extraData={topSongs}
           horizontal={true}
           data={topArtist}
           renderItem={({ item }) =>(

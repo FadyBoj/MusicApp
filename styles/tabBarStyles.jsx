@@ -5,8 +5,7 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:'center',
         gap:40,
-        paddingBottom:0,
-        paddingTop:12,
+        paddingTop:18,
         bottom:0,
         backgroundColor:'rgba(0, 0, 0, 0.847)',
         position:"absolute",
@@ -30,6 +29,11 @@ const styles = StyleSheet.create({
     },
     inActiveText:{
          color:"#919191",
+    },
+    trackPlayer:{
+        position:'absolute',
+        zIndex:90,
+        bottom:0
     }
 })
 

@@ -37,22 +37,29 @@ const Song = ({ navigation,route,songs }) => {
     Sound.setCategory('Playback');
       
 
-
+  console.log(songs)
 
 
   return (
  
-      <Animated.View  style={styles.container}>
+
+        <FlatList
+        data={songs}
+        horizontal={true}
+        pagingEnabled={true}
+        scrollEventThrottle={10}
+        renderItem={({ item }) =>(
+          <View  style={styles.container}>
             
             <FastImage  
             style={styles.songImage}
             source={{
-              uri:songs[3].image,
+              uri:item?.image,
               cache:FastImage.cacheControl.immutable
             }}
             />
-            <Text style={styles.songNameText}>{songs[3].name}</Text>
-            <Text style={styles.artistNameText}>{songs[3].artistName}</Text>
+            <Text style={styles.songNameText}>{item?.name}</Text>
+            <Text style={styles.artistNameText}>{item?.artistName}</Text>
     
             <View style={styles.timing}>
               <Slider 
@@ -60,7 +67,7 @@ const Song = ({ navigation,route,songs }) => {
               thumbStyle={{ height: 10, width: 10 ,backgroundColor:'#fff'}}
               minimumTrackTintColor='#467be3'
                 minimumValue={0}
-                maximumValue={songs[3].time/ 1000}
+                maximumValue={item?.time/ 1000}
                 value={0}
                 allowTouchTrack={true}
                 onValueChange={(value)=>{
@@ -69,7 +76,7 @@ const Song = ({ navigation,route,songs }) => {
     
               <View style={styles.songDurations}>
                 <Text style={styles.timeText}>{0}</Text>
-                <Text style={styles.timeText}>{songs[3].time}</Text>
+                <Text style={styles.timeText}>{item?.time}</Text>
     
               </View>
     
@@ -113,7 +120,10 @@ const Song = ({ navigation,route,songs }) => {
               
             </View>
     
-          </Animated.View>
+          </View>
+        )}
+        />
+        
   )
 }
 
