@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         paddingTop:120,
         width:deviceWidth,
-        flex:1,
-        height:deviceHeight,
+        
         backgroundColor:'#0b0f20',
         zIndex:200,
     },
@@ -74,6 +73,15 @@ const styles = StyleSheet.create({
     },
     timeText:{
         color:"#fff"
+    },
+    songDetails:{
+        backgroundColor:'#0b0f20',
+        alignItems:'center',
+        width:deviceWidth,
+        height:deviceHeight / 2,
+        backgroundColor:'#0b0f20',
+        zIndex:200,
+        paddingTop:24
     }
 })
 

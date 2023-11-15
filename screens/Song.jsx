@@ -29,25 +29,79 @@ import NextIcon from '../assets/NextIcon';
 import PreviousIcon from '../assets/PreviousIcons';
 import DownloadIcon from '../assets/DowloadIcon';
 import PauseIcon from '../assets/PauseIcon';
-import { exists } from '../server/models/user';
+import { ListItemAccordion } from '@rneui/base/dist/ListItem/ListItem.Accordion';
 
-const Song = ({ navigation,route,songs }) => {
+const Song = ({ navigation, route,  trackPlayerSongs}) => {
 
-    // Enable playback in silence mode
-    Sound.setCategory('Playback');
-      
+   
+  const deviceWidth = Dimensions.get('window').width;
+  const deviceHeight = Dimensions.get('window').height;
 
-  console.log(songs)
+  const [songs,setSongs] = React.useState([]);
+
+
+  const listRef = React.useRef(null);
+
+
+  React.useEffect(() =>{
+
+    if(trackPlayerSongs.songs)
+    {
+       setSongs({tracks:trackPlayerSongs.songs,index:trackPlayerSongs.index});
+
+    }
+    
+    if(songs.tracks?.length > 0)
+    {
+    listRef.current.scrollToIndex({animated:false,index:trackPlayerSongs.index})
+    }
+
+
+  },[trackPlayerSongs])
+
+  const onViewableItemsChanged = ({
+    viewableItems,
+  }) => {
+    if(viewableItems.length > 0)
+    {
+
+    const newIndex = viewableItems[0].index
+    setSongs((prevSongs) =>{
+      return {...prevSongs,index:newIndex}
+    })
+  }
+  };
+  const viewabilityConfigCallbackPairs = React.useRef([
+    {
+      onViewableItemsChanged,
+      viewabilityConfig: {
+        itemVisiblePercentThreshold: 60, // Adjust as needed
+        minimumViewTime: 100, // Adjust as needed
+      },
+    },
+  ]);
 
 
   return (
- 
+      <>
+      {
+        trackPlayerSongs &&
+        <>
 
         <FlatList
-        data={songs}
+        showsHorizontalScrollIndicator={false}
+        ref={listRef}
+        extraData={trackPlayerSongs}
+        getItemLayout={(data, index) => (
+          {length: deviceWidth, offset: deviceWidth * index, index}
+        )}
+        data={songs.tracks}
         horizontal={true}
         pagingEnabled={true}
-        scrollEventThrottle={10}
+        viewabilityConfigCallbackPairs={
+          viewabilityConfigCallbackPairs.current
+        }
+       
         renderItem={({ item }) =>(
           <View  style={styles.container}>
             
@@ -58,25 +112,33 @@ const Song = ({ navigation,route,songs }) => {
               cache:FastImage.cacheControl.immutable
             }}
             />
-            <Text style={styles.songNameText}>{item?.name}</Text>
-            <Text style={styles.artistNameText}>{item?.artistName}</Text>
+           
+          </View>
+        )}
+        
+        
+        />
+        <View style={styles.songDetails}>
+          <Text style={styles.songNameText}>{songs.tracks && songs.tracks[songs.index]?.name}</Text>
+            <Text style={styles.artistNameText}>{songs.tracks && songs.tracks[songs.index]?.artistName}</Text>
     
             <View style={styles.timing}>
-              <Slider 
+            <Slider 
               style={{width:"80%",height:20,marginTop:30,}}
               thumbStyle={{ height: 10, width: 10 ,backgroundColor:'#fff'}}
               minimumTrackTintColor='#467be3'
                 minimumValue={0}
-                maximumValue={item?.time/ 1000}
+                maximumValue={songs[trackPlayerSongs.index]?.time}
                 value={0}
                 allowTouchTrack={true}
                 onValueChange={(value)=>{
                 }}
               />
+              
     
               <View style={styles.songDurations}>
                 <Text style={styles.timeText}>{0}</Text>
-                <Text style={styles.timeText}>{item?.time}</Text>
+                <Text style={styles.timeText}>{songs.tracks && songs.tracks[songs.index]?.time}</Text>
     
               </View>
     
@@ -114,17 +176,22 @@ const Song = ({ navigation,route,songs }) => {
     
               </View>
     
-              <TouchableOpacity onPress={()=>{swiperRef.current.scrollBy(1,true)}}>
+              <TouchableOpacity >
                 <NextIcon  width={20} height={20} />
               </TouchableOpacity>
               
             </View>
+            </View>
+        </>
+              }
+
     
-          </View>
-        )}
-        />
-        
+          
+
+        </>
   )
+              
 }
+
 
 export default React.memo(Song)

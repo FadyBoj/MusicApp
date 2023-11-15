@@ -13,7 +13,7 @@ import LibraryIcon from '../assets/LibraryIcon';
 import Song from '../screens/Song';
 
 
-const TabBar = ({state, descriptors, navigation, tabBarVisible, trackPlayerSongs}) => {
+const TabBar = ({state, descriptors, navigation, tabBarVisible, trackPlayerSongs, playListIndex}) => {
 
   const deviceWidth = Dimensions.get('window').width;
   const deviceHeight = Dimensions.get('window').height;
@@ -45,7 +45,7 @@ const TabBar = ({state, descriptors, navigation, tabBarVisible, trackPlayerSongs
     Animated.timing(
       trackAnim,{
         toValue:deviceHeight,
-        duration:300,
+        duration:200,
         useNativeDriver:true
       }
     ).start()
@@ -55,7 +55,7 @@ const TabBar = ({state, descriptors, navigation, tabBarVisible, trackPlayerSongs
     Animated.timing(
       trackAnim,{
         toValue:0,
-        duration:300,
+        duration:200,
         useNativeDriver:true
       }
     ).start()
@@ -81,7 +81,7 @@ const TabBar = ({state, descriptors, navigation, tabBarVisible, trackPlayerSongs
     <View style={{position:'relative'}}>
 
     <Animated.View style={[styles.trackPlayer,{translateY:trackAnim}]}>
-      {trackPlayerSongs.length > 0 && <Song songs={trackPlayerSongs} />}
+      <Song trackPlayerSongs={trackPlayerSongs} />  
     </Animated.View>
 
     <Animated.View style={[styles.container,{translateY:downAnim}]}>

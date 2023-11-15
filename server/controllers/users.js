@@ -46,7 +46,7 @@ const addUser = async(req,res) =>{
             const createdUser = await User.create({
                 firstname:firstname,
                 lastname:lastname,
-                email:email,
+                email:email.toLowerCase(),
                 password:hash
             });
             console.log(createdUser);

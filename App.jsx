@@ -29,6 +29,11 @@ const Stack = createStackNavigator();
 const NativeStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+//Global variables
+
+global.PLAYING_SONG = null;
+global.PLAYING_SONG_NAME = '';
+global.PLAYING_SONG_INDEX = 0
 
 
 //Account stack 
@@ -66,13 +71,14 @@ const CreateAccountStack = () => {
 const MainTabs = ()=>{
   const [tabBarVisible,setTabBarVisible] = React.useState(true);
   const [trackPlayerSongs,setTrackPlayerSongs] = React.useState([]);
+  const [playListIndex,setPlayListIndex] = React.useState(0);
 
   React.useEffect(() => {
     const backAction = () => {
       if(!tabBarVisible){
       setTabBarVisible(true)
-      }
       return true;
+      }
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -89,6 +95,7 @@ const MainTabs = ()=>{
     tabBar={props => <MyTabBar {...props} 
     tabBarVisible={tabBarVisible}
     trackPlayerSongs={trackPlayerSongs}
+    playListIndex={playListIndex}
      />}
   
     >
@@ -97,7 +104,7 @@ const MainTabs = ()=>{
       options={{headerShown:false}}
       name='Home'
       component={MainPage}
-      initialParams={{setTabBarVisible,setTrackPlayerSongs}}
+      initialParams={{setTabBarVisible,setTrackPlayerSongs,setPlayListIndex}}
            />
 
       <Tab.Screen name='Search' component={Search} />

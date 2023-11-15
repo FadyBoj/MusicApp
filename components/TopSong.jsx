@@ -6,7 +6,7 @@ import RNFS, {DownloadDirectoryPath} from 'react-native-fs';
 //Styles
 import styles from '../styles/homeStyles'
 
-const TopSong = ({ song, navigation, index, TrackPlayer, allSongs, updateTopSongs, setTopSongs }) => {
+const TopSong = ({ song, navigation, index, TrackPlayer, allSongs, setTabBarVisible, setTrackPlayerSongs, setPlayListIndex}) => {
 
   const fileUrl = `${DownloadDirectoryPath}/${song.artistName} - ${song.name}.mp3`
   const [exist,setExist] = React.useState(false);
@@ -41,25 +41,21 @@ const TopSong = ({ song, navigation, index, TrackPlayer, allSongs, updateTopSong
     }).start();
   }
 
-  const handleNavigation = ()=>{
-    navigation.navigate('song',{
-      name:song.name,
-      id:song.id,
-      artist:song.artistName,
-      image:song.image,
-      time:song.time,
-      index:index,
-      allSongs:allSongs,
-      exist:exist,
-      updateTopSongs:updateTopSongs,
-      setTopSongs:setTopSongs
+ 
 
-    })
+  const handlePress = () =>{
+    setTabBarVisible(false);
+    setTimeout(() =>{
+      setTrackPlayerSongs((prev) =>{
+        return {...prev,index:index}
+      })
+    },0)
+
   }
 
   return (
     <Animated.View style={[{transform:[{scale:scaleAnim}]}]}>
-      <TouchableOpacity onPress={()=>{}} activeOpacity={0.7} onPressIn={scaleDown} onPressOut={scaleUp}  style={styles.topSong}>
+      <TouchableOpacity onPress={handlePress} activeOpacity={0.7} onPressIn={scaleDown} onPressOut={scaleUp}  style={styles.topSong}>
           <FastImage style={styles.topSongImage}
           source={{uri:song.image,cache:FastImage.cacheControl.immutable}}
           

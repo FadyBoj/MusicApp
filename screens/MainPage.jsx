@@ -25,7 +25,7 @@ import Recommendations from '../components/Recommendations';
 import { TouchEventType } from 'react-native-gesture-handler/lib/typescript/TouchEventType';
 const MainPage = ({ navigation, route }) => {
 
-  const { setTabBarVisible, setTrackPlayerSongs  } = route.params;
+  const { setTabBarVisible, setTrackPlayerSongs, setPlayListIndex  } = route.params;
 
 
   
@@ -103,17 +103,11 @@ const MainPage = ({ navigation, route }) => {
 
    React.useEffect(() =>{
 
-    setTrackPlayerSongs(topSongs)
+    setTrackPlayerSongs({songs:topSongs,index:0,visible:false})
 
    },[topSongs])
 
-   const updateTopSongs = (songId) =>{
-    setTopSongs((prevSongs) =>{
-      return prevSongs.map((song) =>{
-        return song.index === songId ? {...song,exist:true} : song
-      })
-    })
-   }
+ 
    
 
   return (
@@ -134,9 +128,7 @@ const MainPage = ({ navigation, route }) => {
 
         <View style={styles.settingContainer}>
           <View style={styles.settingsIconContainer}>
-            <TouchableOpacity onPress={()=>{
-              setTabBarVisible(prev => !prev)
-              }}><SettingsIcon style={styles.settingsIcon} width={36} height={36}/></TouchableOpacity>
+            <TouchableOpacity ><SettingsIcon style={styles.settingsIcon} width={36} height={36}/></TouchableOpacity>
           </View>
           <Image  style={styles.profileImage} source={JohnWick} />
         </View>
@@ -154,8 +146,9 @@ const MainPage = ({ navigation, route }) => {
             data={topSongs}
             renderItem={({ item,index }) => (
               <TopSong 
-              updateTopSongs={updateTopSongs}
-              setTopSongs={setTopSongs}
+              setTabBarVisible={setTabBarVisible}
+              setTrackPlayerSongs={setTrackPlayerSongs}
+              setPlayListIndex={setPlayListIndex}
               allSongs={topSongs}
               index={index}
               navigation={navigation}
