@@ -55,7 +55,7 @@ const TabBar = ({state, descriptors, navigation, tabBarVisible, trackPlayerSongs
     Animated.timing(
       trackAnim,{
         toValue:0,
-        duration:200,
+        duration:340,
         useNativeDriver:true
       }
     ).start()
