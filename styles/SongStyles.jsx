@@ -9,11 +9,23 @@ const deviceHeight = Dimensions.get('window').height
 const styles = StyleSheet.create({
     container:{
         alignItems:'center',
+        position:'relative',
         paddingTop:120,
         width:deviceWidth,
-        
         backgroundColor:'#0b0f20',
-        zIndex:200,
+        zIndex:100,
+        justifyContent:'flex-start',
+        
+    },
+    songList:{
+        width:deviceWidth,
+        backgroundColor:'#0b0f20',
+        zIndex:100,
+        top:400,
+        position:'absolute',
+        top:0,
+        height:deviceHeight
+
     },
     songImage:{
         width:300,
@@ -26,8 +38,8 @@ const styles = StyleSheet.create({
         fontFamily:'ProductSans-Medium',
         marginTop:20,
         fontSize:22,
-        width:300,
-        textAlign:'center'
+        textAlign:'center',
+        maxWidth:300
     },
     artistNameText:{
         color:'#fff',
@@ -36,7 +48,9 @@ const styles = StyleSheet.create({
         color:'#7d7f87',
         marginTop:10,
         width:300,
-        textAlign:'center'
+        textAlign:'center',
+        zIndex:330,
+      
     },
     playIconContainer:{
         padding:15,
@@ -60,6 +74,10 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         gap:10,
+        zIndex:300,
+        position:'absolute',
+        bottom:200
+
    
     },
     time:{
@@ -72,7 +90,10 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
     },
     timeText:{
-        color:"#fff"
+        color:"#fff",
+        zIndex:230,
+        position:'relative',
+
     },
     songDetails:{
         backgroundColor:'#0b0f20',
@@ -80,8 +101,11 @@ const styles = StyleSheet.create({
         width:deviceWidth,
         height:deviceHeight / 2,
         backgroundColor:'#0b0f20',
-        zIndex:200,
-        paddingTop:24
+        paddingTop:24,
+        position:'absolute',
+        bottom:0,
+        zIndex:220
+
     }
 })
 

@@ -83,12 +83,14 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
 
 
   return (
-      <>
-      {
-        trackPlayerSongs &&
-        <>
+    <>
+    {
+      trackPlayerSongs &&
+      <View style={{position:'relative',height:deviceHeight,width:deviceWidth}}>
 
+      <View >
         <FlatList
+        style={styles.songList}
         showsHorizontalScrollIndicator={false}
         ref={listRef}
         extraData={trackPlayerSongs}
@@ -118,9 +120,13 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
         
         
         />
-        <View style={styles.songDetails}>
-          <Text style={styles.songNameText}>{songs.tracks && songs.tracks[songs.index]?.name}</Text>
-            <Text style={styles.artistNameText}>{songs.tracks && songs.tracks[songs.index]?.artistName}</Text>
+        </View>
+            <View style={{alignSelf:'center',zIndex:400,position:'absolute',bottom:340,alignItems:'center'}} >
+              <Text style={styles.songNameText}>{songs.tracks && songs.tracks[songs.index]?.name}</Text>
+            </View>
+            <View style={{alignSelf:'center',zIndex:400,position:'absolute',bottom:300,alignItems:'center'}}>
+              <Text style={styles.artistNameText}>{songs.tracks && songs.tracks[songs.index]?.artistName}</Text>
+            </View>
     
             <View style={styles.timing}>
             <Slider 
@@ -136,7 +142,7 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
               />
               
     
-              <View style={styles.songDurations}>
+              <View style={[styles.songDurations]}>
                 <Text style={styles.timeText}>{0}</Text>
                 <Text style={styles.timeText}>{songs.tracks && songs.tracks[songs.index]?.time}</Text>
     
@@ -144,7 +150,7 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
     
             </View>
     
-            <View style={styles.songOptions}>
+            <View style={[styles.songOptions,{alignSelf:'center',zIndex:400,position:'absolute',bottom:120,alignItems:'center'}]}>
     
               <PreviousIcon width={20} height={20} />
     
@@ -182,7 +188,6 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
               
             </View>
             </View>
-        </>
               }
 
     
