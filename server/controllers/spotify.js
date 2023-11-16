@@ -216,20 +216,11 @@ const getAudio = async (req,res) =>{
         return res.status(404).json({msg:"No items found"})
     }
 
-   const videoId = searchResults.items[0].id;
-   
+    console
 
-   const audioReadableStream = ytdl(videoId, { quality: 'highestaudio' });
-    
-   // Set the response headers
-   res.set({
-     'Content-Type': 'audio/mpeg',
-     'Content-Disposition': 'inline',
-   });
+   const videoURL = searchResults.items[0].url;
 
-   // Stream the audio directly to the response
-   audioReadableStream.pipe(res);
-
+   res.status(200).json({url:videoURL})
 
 }
 

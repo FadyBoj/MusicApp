@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         marginTop:20,
         fontSize:22,
         textAlign:'center',
-        maxWidth:300
+     
     },
     artistNameText:{
         color:'#fff',
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
         fontSize:17,
         color:'#7d7f87',
         marginTop:10,
-        width:300,
         textAlign:'center',
         zIndex:330,
       

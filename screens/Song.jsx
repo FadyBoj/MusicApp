@@ -14,9 +14,10 @@ import React, { useMemo } from 'react';
 import FastImage from 'react-native-fast-image';
 import Sound from 'react-native-sound';
 import { Slider } from '@rneui/themed';
-import Swiper from 'react-native-swiper';
-import { useNavigation } from '@react-navigation/native';
-import Carousel from 'react-native-reanimated-carousel';
+import TextTicker from 'react-native-text-ticker';
+import ytdl from "react-native-ytdl";
+import axios from 'axios';
+
 // Styles
 import styles from '../styles/SongStyles';
 
@@ -31,14 +32,35 @@ import DownloadIcon from '../assets/DowloadIcon';
 import PauseIcon from '../assets/PauseIcon';
 import { ListItemAccordion } from '@rneui/base/dist/ListItem/ListItem.Accordion';
 
+
 const Song = ({ navigation, route,  trackPlayerSongs}) => {
+
+
+  const isExist = async(songName,artistName) =>{
+    const exist = await RNFS.exists(`${DownloadDirectoryPath}/${songName}-${artistName}`);
+    if(!exist)
+    return console.log("Doesn't exist");
+    console.log(exist)
+    
+  }
+
+  const playSong = async(songName,artistName) =>{
+
+    const { data } = await axios.get(`http://localhost:8000/spotify-api/audio?name=${songName} - ${artistName}`)
+
+    const youtubeURL = data.url;
+    const urls = await ytdl(youtubeURL, { quality: 'highestaudio' });
+    console.log(urls[0].url)
+  }
+
+
 
    
   const deviceWidth = Dimensions.get('window').width;
   const deviceHeight = Dimensions.get('window').height;
 
   const [songs,setSongs] = React.useState([]);
-
+  const [songExist,setSongExsist] = React.useState(false);
 
   const listRef = React.useRef(null);
 
@@ -68,9 +90,12 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
     const newIndex = viewableItems[0].index
     setSongs((prevSongs) =>{
       return {...prevSongs,index:newIndex}
-    })
+    });
+
+
   }
   };
+
   const viewabilityConfigCallbackPairs = React.useRef([
     {
       onViewableItemsChanged,
@@ -80,6 +105,12 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
       },
     },
   ]);
+
+  React.useEffect(() =>{
+    if(songs.tracks?.length > 0 )
+     isExist(songs.tracks[songs.index]?.name,songs.tracks[songs.index]?.artistName)
+
+  },[songs])
 
 
   return (
@@ -121,8 +152,13 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
         
         />
         </View>
-            <View style={{alignSelf:'center',zIndex:400,position:'absolute',bottom:340,alignItems:'center'}} >
-              <Text style={styles.songNameText}>{songs.tracks && songs.tracks[songs.index]?.name}</Text>
+            <View style={{alignSelf:'center',zIndex:400,position:'absolute',bottom:340,alignItems:'center',maxWidth:320}} >
+              <TextTicker 
+              style={styles.songNameText}
+              duration={7000} // Duration of the scroll animation in milliseconds
+              bounce
+              loop
+              >{songs.tracks && songs.tracks[songs.index]?.name}</TextTicker>
             </View>
             <View style={{alignSelf:'center',zIndex:400,position:'absolute',bottom:300,alignItems:'center'}}>
               <Text style={styles.artistNameText}>{songs.tracks && songs.tracks[songs.index]?.artistName}</Text>
@@ -176,10 +212,6 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
                   </TouchableOpacity>
                   )
                 }
-    
-                
-    
-    
               </View>
     
               <TouchableOpacity >
@@ -189,10 +221,6 @@ const Song = ({ navigation, route,  trackPlayerSongs}) => {
             </View>
             </View>
               }
-
-    
-          
-
         </>
   )
               
